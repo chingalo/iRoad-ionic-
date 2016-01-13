@@ -1,0 +1,32 @@
+<ion-modal-view>
+  <ion-header-bar>
+  </ion-header-bar>
+  <ion-content>
+
+    <div class="row">
+      <div class="col col-12" style="margin-top:5%;text-align: center;margin-bottom:5%;">
+        <h4>iRoad 2.0 Mobile application</h4>
+        <img src="img/logo.png" >
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-100">
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Base url for iRoad server</span>
+          <input type="text" placeholder="Base Url for iRoad server" ng-model="data.baseUrl">
+        </label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-50">
+        <button class="button button-full button-positive" ng-click="saveSetting()">Save</button>
+      </div>
+      <div class="col col-50">
+        <button class="button button-full button-positive" ng-click="closeSetting()">Close</button>
+      </div>
+    </div>
+
+  </ion-content>
+</ion-modal-view>

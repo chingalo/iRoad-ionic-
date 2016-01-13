@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('app', [
   'ionic',
-  'app.controllers',
+  'ngStorage',
   'app.DriverController',
   'app.vehicleController'
 ])
@@ -27,14 +27,55 @@ angular.module('app', [
     });
   })
 
+  .controller('mainController',function($scope,$ionicModal,$localStorage){
+
+    $scope.data = {};
+    var url = 'http://roadsafety.go.tz/demo';
+
+    if(! $localStorage.baseUrl){
+      $localStorage.baseUrl = 'http://roadsafety.go.tz/demo';
+    }
+    $scope.data.baseUrl = $localStorage.baseUrl;
+
+    $ionicModal.fromTemplateUrl('templates/setConfiguration.html', {
+      scope: $scope
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+
+    $scope.closeSetting = function() {
+      $scope.modal.hide();
+    };
+
+    $scope.setConfiguration = function() {
+      $scope.modal.show();
+    };
+
+    $scope.saveSetting = function(){
+
+      $localStorage.baseUrl = $scope.data.baseUrl;
+      $scope.closeSetting();
+    };
+
+    $scope.login = function(){
+
+      alert('login');
+    };
+
+  })
   .config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
+
+      .state('login',{
+        url : '/login',
+        templateUrl : 'templates/login.html',
+        controller : 'mainController'
+      })
 
       .state('app', {
         url: '/app',
         abstract: true,
-        templateUrl: 'templates/menu.html',
-        controller: 'AppCtrl'
+        templateUrl: 'templates/menu.html'
       })
 
       .state('app.profile', {
@@ -92,5 +133,5 @@ angular.module('app', [
         }
       });
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/app/home');
+    $urlRouterProvider.otherwise('/login');
   });
