@@ -4,7 +4,12 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('app', ['ionic', 'app.controllers'])
+angular.module('app', [
+  'ionic',
+  'app.controllers',
+  'app.DriverController',
+  'app.vehicleController'
+])
 
   .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -72,7 +77,8 @@ angular.module('app', ['ionic', 'app.controllers'])
         url: '/driver-verification',
         views: {
           'menuContent': {
-            templateUrl: 'templates/driverVerification.html'
+            templateUrl: 'templates/driverVerification.html',
+            controller : 'DriverController'
           }
         }
       })
@@ -80,7 +86,8 @@ angular.module('app', ['ionic', 'app.controllers'])
         url: '/vehicle-verification',
         views: {
           'menuContent': {
-            templateUrl: 'templates/vehicleVerification.html'
+            templateUrl: 'templates/vehicleVerification.html',
+            controller : 'vehicleController'
           }
         }
       });

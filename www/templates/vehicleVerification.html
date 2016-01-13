@@ -1,5 +1,21 @@
 <ion-view view-title="iROAD 2.0">
   <ion-content>
-  vehicle verifications
+    <div class="row">
+      <div class="col col-100">
+        <label class="item item-input item-floating-label">
+          <span class="input-label">Vehicle Plate Number</span>
+          <input type="text" placeholder="Vehicle Plate Number" ng-model="data.vehiclePlateNumber">
+        </label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col col-100">
+        <button class="button button-full button-positive" ng-click="verifyVehicle()">
+          Verify Vehicle
+        </button>
+      </div>
+    </div>
+
   </ion-content>
 </ion-view>
