@@ -8,8 +8,6 @@ angular.module('app', [
   'ionic',
   'ionic-toast',
   'ngStorage',
-  'app.DriverController',
-  'app.vehicleController'
 ])
 
   .run(function($ionicPlatform) {
@@ -66,7 +64,7 @@ angular.module('app', [
         $scope.data.username = null;
         $scope.data.password = null;
       }else{
-        ionicToast.show('This is a toast at the top.', 'top', false, 1500);
+        ionicToast.show('Please Enter both username and password.', 'bottom', false, 1500);
       }
     };
 

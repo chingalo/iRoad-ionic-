@@ -1,12 +1,13 @@
-angular.module('app.DriverController', [])
+angular.module('app')
 
-.controller('DriverController',function($scope){
+.controller('DriverController',function($scope,ionicToast){
 
     $scope.data = {};
 
     $scope.verifyDriver = function(){
 
-      alert('Driver Licence Number : ' + $scope.data.driverLicenceNumber);
+      var message = 'Driver Licence Number : ' + $scope.data.driverLicenceNumber;
+      ionicToast.show(message, 'bottom', false, 1500);
     };
 
     $scope.scanDriverLicence = function(){
@@ -19,7 +20,7 @@ angular.module('app.DriverController', [])
 
         },
         function () {
-          alert('fail to scan');
+          ionicToast.show('fail to scan', 'bottom', false, 1500);
         }
       );
       $scope.verifyDriver();

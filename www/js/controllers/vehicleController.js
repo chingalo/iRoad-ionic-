@@ -1,6 +1,6 @@
-angular.module('app.vehicleController', [])
+angular.module('app')
 
-  .controller('vehicleController',function($scope){
+  .controller('vehicleController',function($scope,ionicToast){
 
     $scope.data = {};
 
@@ -14,11 +14,11 @@ angular.module('app.vehicleController', [])
 
           plateNumber  =  plateNumber.substr(0,4) + ' ' +plateNumber.substr(4);
         }
-
-        alert('vehicle plate number : ' + plateNumber);
+        var message = 'vehicle plate number : ' + plateNumber;
+        ionicToast.show(message, 'bottom', false, 1500);
       }else{
 
-        alert('empty');
+        ionicToast.show('Please Enter Vehicle plate Number', 'bottom', false, 1500);
       }
 
     }
