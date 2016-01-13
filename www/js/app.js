@@ -6,6 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('app', [
   'ionic',
+  'ionic-toast',
   'ngStorage',
   'app.DriverController',
   'app.vehicleController'
@@ -27,7 +28,7 @@ angular.module('app', [
     });
   })
 
-  .controller('mainController',function($scope,$ionicModal,$localStorage){
+  .controller('mainController',function($scope,$ionicModal,ionicToast,$localStorage,$state,$location){
 
     $scope.data = {};
     var url = 'http://roadsafety.go.tz/demo';
@@ -59,8 +60,37 @@ angular.module('app', [
 
     $scope.login = function(){
 
-      alert('login');
+      if($scope.data.username && $scope.data.password){
+
+        $scope.authenticateUser($scope.data.username,$scope.data.password);
+        $scope.data.username = null;
+        $scope.data.password = null;
+      }else{
+        ionicToast.show('This is a toast at the top.', 'top', false, 1500);
+      }
     };
+
+    $scope.logOut = function(){
+
+      $state.go('login');
+    };
+
+    $scope.authenticateUser = function($username, $password){
+
+      $state.go('app.home');
+    };
+
+
+    //home button redirection
+    $scope.reportAccident =  function(){
+
+      $state.go('app.reportAccident');
+    };
+    $scope.reportOffense =  function(){
+
+      $state.go('app.reportOffense');
+    };
+
 
   })
   .config(function($stateProvider, $urlRouterProvider) {
