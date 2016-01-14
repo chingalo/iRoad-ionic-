@@ -1,28 +1,26 @@
 <ion-view view-title="iROAD 2.0">
   <ion-content>
     <div class="row">
-      <div class="col col-75">
+      <div class="col col-100">
         <label class="item item-input item-floating-label">
           <span class="input-label">Driver Licence Number</span>
           <input type="text" placeholder="Driver Licence Number" ng-model="data.driverLicenceNumber">
         </label>
       </div>
-      <div class="col col-25" style="margin-top: 2%;">
-        <button class="button " style="padding-top: 1%;" ng-click="scanDriverLicence()">
-          <i class="fa fa-barcode fa-2x"></i>
-        </button>
-      </div>
     </div>
 
     <div class="row">
-      <div class="col col-100">
+      <div class="col col-75">
         <button class="button button-full button-positive" ng-click="verifyDriver()">
           Verify Driver
         </button>
       </div>
+      <div class="col col-25" >
+        <button class="button button-full button-positive"  ng-click="scanDriverLicence()">
+          <i class="fa fa-barcode fa-2x"></i>
+        </button>
+      </div>
     </div>
-
-    {{ defaultPhotoID }}
 
   </ion-content>
 </ion-view>
