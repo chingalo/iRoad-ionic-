@@ -69,8 +69,7 @@ angular.module('app', [
       if($scope.data.username && $scope.data.password){
 
         authenticateUser($scope.data.username,$scope.data.password);
-        $scope.data.username = null;
-        $scope.data.password = null;
+
       }else{
         ionicToast.show('Please Enter both username and password.', 'bottom', false, 1500);
       }
@@ -111,6 +110,8 @@ angular.module('app', [
             useDefaultXhrHeader : false,
             success : function(response){
 
+              $scope.data.username = null;
+              $scope.data.password = null;
               try{
                 var userData = JSON.parse(response.responseText);
                 $localStorage.loginUser = {'username' : $username,'password':$password};
@@ -163,7 +164,7 @@ angular.module('app', [
           $scope.data.password = null;
           //fail to connect to the server
           var message = 'Fail to connect to the server, please check base url';
-          ionicToast.show(message +' : ' + JSON.stringify(err), 'bottom', true, 1500000);
+          ionicToast.show(message, 'bottom', true, 1500000);
           $scope.data.loading = false;
           $scope.$apply();
         }
