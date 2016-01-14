@@ -69,6 +69,8 @@ angular.module('app', [
       if($scope.data.username && $scope.data.password){
 
         authenticateUser($scope.data.username,$scope.data.password);
+        $scope.data.username = null;
+        $scope.data.password = null;
       }else{
         ionicToast.show('Please Enter both username and password.', 'bottom', false, 1500);
       }
@@ -86,7 +88,7 @@ angular.module('app', [
 
       var base = $localStorage.baseUrl;
       Ext.Ajax.request({
-        url : base + '/dhis-web-commons-security/login.action',
+        url : base + '/dhis-web-commons-security/login.action?failed=false',
         callbackKey : 'callback',
         method : 'POST',
         params : {
@@ -113,8 +115,6 @@ angular.module('app', [
                 var userData = JSON.parse(response.responseText);
                 $localStorage.loginUser = {'username' : $username,'password':$password};
                 $localStorage.loginUserUserData = userData;
-                $scope.data.username = null;
-                $scope.data.password = null;
 
                 //loading library
                 var dhisConfigs = {
@@ -163,7 +163,7 @@ angular.module('app', [
           $scope.data.password = null;
           //fail to connect to the server
           var message = 'Fail to connect to the server, please check base url';
-          ionicToast.show(message +' : ' + err, 'bottom', false, 1500);
+          ionicToast.show(message +' : ' + JSON.stringify(err), 'bottom', false, 1500000);
           $scope.data.loading = false;
           $scope.$apply();
         }
