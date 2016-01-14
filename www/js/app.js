@@ -26,7 +26,7 @@ angular.module('app', [
     });
   })
 
-  .controller('mainController',function($scope,$ionicModal,ionicToast,$localStorage,$state,$location){
+  .controller('mainController',function($scope,$ionicModal,ionicToast,$localStorage,$state,appServices){
 
     $scope.data = {};
     var url = 'http://roadsafety.go.tz/demo';
@@ -75,7 +75,89 @@ angular.module('app', [
 
     $scope.authenticateUser = function($username, $password){
 
-      $state.go('app.home');
+      $scope.data.loading =true;
+
+      var base = $localStorage.baseUrl;
+      Ext.Ajax.request({
+        url : base + '/dhis-web-commons-security/login.action?failed=false',
+        callbackKey : 'callback',
+        method : 'POST',
+        params : {
+          j_username : $username,
+          j_password : $password
+        },
+        withCredentials : true,
+        useDefaultXhrHeader : false,
+        success: function () {
+          //call checking if user is available
+          Ext.Ajax.request({
+            url: base + '/api/me.json',
+            callbackKey : 'callback',
+            method : 'GET',
+            params : {
+              j_username : $username,
+              j_password : $password
+            },
+            withCredentials : true,
+            useDefaultXhrHeader : false,
+            success : function(response){
+
+              try{
+                var userData = JSON.parse(response.responseText);
+                $localStorage.loginUser = {'username' : $username,'password':$password};
+                $localStorage.loginUserUserData = userData;
+
+                //loading library
+                var dhisConfigs = {
+                  baseUrl: base + '/',
+                  refferencePrefix: "Program_"
+                };
+
+                $scope.onInitialize = function(){
+                  var registries = new iroad2.data.Modal("Offence Registry",[]);
+                  registries.getAll(function(result){
+
+                    $localStorage.offenseRegistries = result;
+                  });
+                };
+
+                dhisConfigs.onLoad = function () {
+                  $scope.onInitialize();
+                };
+                iroad2.Init(dhisConfigs);
+
+                console.log('success');
+                //redirect to home page for success login
+                // $state.go('app.home');
+
+              }catch(e){
+                var message = 'Fail to login, please your username or password';
+                ionicToast.show(message, 'bottom', false, 1500);
+              }
+
+              $scope.data.loading = false;
+              $scope.$apply();
+            },
+            failure : function(){
+
+              var message = 'Fail to login, please Check your network';
+              ionicToast.show(message, 'bottom', false, 1500);
+              $scope.data.loading = false;
+              $scope.$apply();
+            }
+          });
+
+        },
+        failure : function() {
+
+          //fail to connect to the server
+          var message = 'Fail to connect to the server, please check base url';
+          ionicToast.show(message, 'bottom', false, 1500);
+          $scope.data.loading = false;
+          $scope.$apply();
+        }
+      });
+
     };
 
 
@@ -128,7 +210,8 @@ angular.module('app', [
         url: '/report-accident',
         views: {
           'menuContent': {
-            templateUrl: 'templates/reportAccident.html'
+            templateUrl: 'templates/reportAccident.html',
+            controller : 'accidentController'
           }
         }
       })
@@ -137,7 +220,8 @@ angular.module('app', [
         url: '/report-offense',
         views: {
           'menuContent': {
-            templateUrl: 'templates/reportOffense.html'
+            templateUrl: 'templates/reportOffense.html',
+            controller : 'offenseController'
           }
         }
       })
