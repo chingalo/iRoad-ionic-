@@ -115,7 +115,9 @@ angular.module('app', [
               try{
                 var userData = JSON.parse(response.responseText);
                 $localStorage.loginUser = {'username' : $username,'password':$password};
-                $localStorage.loginUserUserData = userData;
+                $localStorage.loginUserData = userData;
+                console.log(JSON.stringify(userData));
+                $scope.loginUserData = $localStorage.loginUserData
 
                 //loading library
                 var dhisConfigs = {
