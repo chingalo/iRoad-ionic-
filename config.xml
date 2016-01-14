@@ -18,6 +18,10 @@
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
 
+  <gap:plugin name="cordova-plugin-whitelist" source="npm" version="~1" />
+  <plugin name="cordova-plugin-whitelist" version="~1" />
+  <plugin name="cordova-plugin-whitelist" spec="~1" />
+
   <access origin="http://*" />
   <feature name="http://api.phonegap.com/1.0/network"/>
   <allow-intent href="http://*/*" />
@@ -26,13 +30,6 @@
   <allow-intent href="sms:*" />
   <allow-intent href="mailto:*" />
   <allow-intent href="geo:*" />
-  <platform name="android">
-    <allow-intent href="market:*" />
-  </platform>
-  <platform name="ios">
-    <allow-intent href="itms:*" />
-    <allow-intent href="itms-apps:*" />
-  </platform>
   <icon src="ic_launcher.png" width="170" height="170" />
 
   <!--third party plugin-->
