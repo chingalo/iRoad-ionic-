@@ -2,7 +2,7 @@
 <widget id="com.ionicframework.iroad726992" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>iRoad - ionic</name>
   <description>
-        An Ionic Framework and Cordova project.
+        An Ionic Framework and Cordova project for Mobile app for accessing iROAD system.
     </description>
   <author email="profschingalo@gmail.com" href="https://demo-josephsite.rhcloud.com/">
       Joseph Chingalo
