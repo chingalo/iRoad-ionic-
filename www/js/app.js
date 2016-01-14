@@ -78,6 +78,7 @@ angular.module('app', [
 
     $scope.logOut = function(){
 
+      $localStorage.loginUser = '';
       $state.go('login');
     };
 
@@ -87,7 +88,7 @@ angular.module('app', [
 
       var base = $localStorage.baseUrl;
       Ext.Ajax.request({
-        url : base + '/dhis-web-commons-security/login.action?failed=false',
+        url : base + '/dhis-web-commons-security/login.action',
         callbackKey : 'callback',
         method : 'POST',
         params : {
