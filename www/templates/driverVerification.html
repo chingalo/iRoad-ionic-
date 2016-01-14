@@ -27,9 +27,6 @@
         <div class="item item-avatar" >
           <img ng-src="{{ data.driverPhotoUrl }}">
           <h2>{{ data.driver['Full Name'] }}</h2>
-
-
-
         </div>
 
         <div class="item item-body">
@@ -37,6 +34,22 @@
             {{ key }} : <br>
             <span style="color: #007aff;">{{ data.driver[key] }}</span>
           </p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row" ng-if = "data.offenceData || data.accidentData" style=" padding-bottom: 15%;">
+      <div class="col col-100">
+        <div class="item item-avatar" >
+          <h2> Driver Rap sheet </h2>
+        </div>
+        <div class="item item-body">
+          <p>Number of accidents : <span style="color: #007aff;"> {{ data.accidentData.length }}</span></p>
+          <p>Number of Offenses : <span style="color: #007aff;"> {{ data.offenceData.length }} </span></p>
+
+          <button ng-if = "data.accidentData.length > 0" ng-click="rapSheetReport('accident')" class="button button-full button-positive">Accident History</button>
+          <button ng-if = "data.offenceData.length > 0" ng-click="rapSheetReport('offense')" class="button button-full button-positive">Offense History</button>
         </div>
       </div>
 

@@ -1,6 +1,6 @@
 angular.module('app')
 
-.controller('DriverController',function($scope,ionicToast,$localStorage,$http){
+.controller('DriverController',function($scope,$ionicModal,ionicToast,$localStorage,$http){
 
     $scope.data = {};
     $scope.data.loading = false;
@@ -10,17 +10,24 @@ angular.module('app')
     }
     $scope.verifyDriver = function(){
 
+      $scope.data.driver = null;
+      $scope.data.accidentData = null;
+      $scope.data.offenceData = null;
+
       if($scope.data.driverLicenceNumber){
 
         $scope.data.loading = true;
 
+        var driverLicenceNumber =$scope.data.driverLicenceNumber;
         var driverModal =  new iroad2.data.Modal('Driver',[]);
-        driverModal.get({'value':$scope.data.driverLicenceNumber},function(result){
+        driverModal.get({'value':driverLicenceNumber},function(result){
           if(result.length > 0){
 
             $scope.data.loading = false;
             $scope.data.driver = result[0];
 
+            getAccidentData(driverLicenceNumber);
+            getOffenseData(driverLicenceNumber);
             var imageUrl = $localStorage.baseUrl + '/api/documents/';
             if($scope.data.driver['Driver Photo']){
               $scope.data.driverPhotoUrl = imageUrl + $scope.data.driver['Driver Photo'] + '/data';
@@ -65,7 +72,55 @@ angular.module('app')
       $scope.verifyDriver();
     };
 
+    //show rap sheet for driver
+    $ionicModal.fromTemplateUrl('templates/driverRapSheetHistory.html', {
+      scope: $scope
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+    $scope.rapSheetReport = function(type){
 
+      $scope.data.rapSheetType = type;
+      $scope.modal.show();
+    };
+    $scope.closeRapSheetHistory = function(){
+
+      $scope.modal.hide();
+    };
+
+    function getAccidentData(driverLicenceNumber){
+
+      $scope.data.loading = true;
+      $scope.$apply();
+      var accidentModal = new  iroad2.data.Modal('Accident Vehicle',[]);
+      var accidents = [];
+      accidentModal.get(new iroad2.data.SearchCriteria('Licence Number',"=",driverLicenceNumber),function(accidentResults){
+
+        for(var i = 0; i < accidentResults.length; i++){
+          var dataResult = accidentResults[i];
+          if(!(JSON.stringify(dataResult.Accident) === '{}' )){
+            accidents.push(dataResult);
+          }
+        }
+        $scope.data.accidentData = accidents;
+        $scope.data.loading = false;
+        $scope.$apply();
+      });
+    }
+    function getOffenseData(driverLicenceNumber){
+
+      $scope.data.loading = true;
+      $scope.$apply();
+      var offenseModal = new  iroad2.data.Modal('Offence Event',[]);
+      var offenses = [];
+      offenseModal.get(new iroad2.data.SearchCriteria('Driver License Number',"=",driverLicenceNumber),function(offensesResults){
+
+        $scope.data.offenceData = offensesResults;
+
+        $scope.data.loading = false;
+        $scope.$apply();
+      });
+    }
     /*
     getting default photo data
      */
