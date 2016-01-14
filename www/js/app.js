@@ -163,7 +163,7 @@ angular.module('app', [
           $scope.data.password = null;
           //fail to connect to the server
           var message = 'Fail to connect to the server, please check base url';
-          ionicToast.show(message +' : ' + JSON.stringify(err), 'bottom', false, 1500000);
+          ionicToast.show(message +' : ' + JSON.stringify(err), 'bottom', true, 1500000);
           $scope.data.loading = false;
           $scope.$apply();
         }
