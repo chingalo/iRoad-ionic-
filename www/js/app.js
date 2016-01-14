@@ -69,8 +69,6 @@ angular.module('app', [
       if($scope.data.username && $scope.data.password){
 
         authenticateUser($scope.data.username,$scope.data.password);
-        $scope.data.username = null;
-        $scope.data.password = null;
       }else{
         ionicToast.show('Please Enter both username and password.', 'bottom', false, 1500);
       }
@@ -115,6 +113,8 @@ angular.module('app', [
                 var userData = JSON.parse(response.responseText);
                 $localStorage.loginUser = {'username' : $username,'password':$password};
                 $localStorage.loginUserUserData = userData;
+                $scope.data.username = null;
+                $scope.data.password = null;
 
                 //loading library
                 var dhisConfigs = {
@@ -141,6 +141,7 @@ angular.module('app', [
               }catch(e){
                 var message = 'Fail to login, please your username or password';
                 ionicToast.show(message, 'bottom', false, 1500);
+                $scope.data.password = null;
               }
 
               $scope.data.loading = false;
@@ -148,6 +149,7 @@ angular.module('app', [
             },
             failure : function(){
 
+              $scope.data.password = null;
               var message = 'Fail to login, please Check your network';
               ionicToast.show(message, 'bottom', false, 1500);
               $scope.data.loading = false;
@@ -156,11 +158,12 @@ angular.module('app', [
           });
 
         },
-        failure : function() {
+        failure : function(err) {
 
+          $scope.data.password = null;
           //fail to connect to the server
           var message = 'Fail to connect to the server, please check base url';
-          ionicToast.show(message, 'bottom', false, 1500);
+          ionicToast.show(message +' : ' + err, 'bottom', false, 1500);
           $scope.data.loading = false;
           $scope.$apply();
         }
