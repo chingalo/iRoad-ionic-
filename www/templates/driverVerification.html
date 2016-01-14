@@ -22,5 +22,31 @@
       </div>
     </div>
 
+    <div class="row" ng-if="data.driver">
+      <div class="col col-100">
+        <div class="item item-avatar" >
+          <img ng-src="{{ data.driverPhotoUrl }}">
+          <h2>{{ data.driver['Full Name'] }}</h2>
+
+
+
+        </div>
+
+        <div class="item item-body">
+          <p ng-repeat="(key,value) in data.driver"  ng-if = "key == 'Gender' || key == 'TIN Number' || key == 'Driving Class Name' || key == 'Phone Number' ">
+            {{ key }} : <br>
+            <span style="color: #007aff;">{{ data.driver[key] }}</span>
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row" ng-if = "data.loading" style="text-align: center;font-size: 14px;margin-top: 2%;">
+      <div class="col col-100">
+        <ion-spinner icon="ios"></ion-spinner>
+      </div>
+    </div>
+
   </ion-content>
 </ion-view>
