@@ -26,13 +26,21 @@ angular.module('app', [
     });
   })
 
-  .controller('mainController',function($scope,$ionicModal,ionicToast,$localStorage,$state,appServices){
+  .controller('mainController',function($scope,$ionicModal,ionicToast,$localStorage,$state){
 
     $scope.data = {};
     var url = 'http://roadsafety.go.tz/demo';
 
+    //checking for bas url for app
     if(! $localStorage.baseUrl){
-      $localStorage.baseUrl = 'http://roadsafety.go.tz/demo';
+      $localStorage.baseUrl = url;
+    }else{
+      //authenticate using local storage data of login user
+      if($localStorage.loginUser){
+        var username = $localStorage.loginUser.username;
+        var password = $localStorage.loginUser.password;
+        authenticateUser(username,password);
+      }
     }
     $scope.data.baseUrl = $localStorage.baseUrl;
 
@@ -60,7 +68,7 @@ angular.module('app', [
 
       if($scope.data.username && $scope.data.password){
 
-        $scope.authenticateUser($scope.data.username,$scope.data.password);
+        authenticateUser($scope.data.username,$scope.data.password);
         $scope.data.username = null;
         $scope.data.password = null;
       }else{
@@ -73,7 +81,7 @@ angular.module('app', [
       $state.go('login');
     };
 
-    $scope.authenticateUser = function($username, $password){
+    function authenticateUser($username, $password){
 
       $scope.data.loading =true;
 
@@ -126,9 +134,8 @@ angular.module('app', [
                 };
                 iroad2.Init(dhisConfigs);
 
-                console.log('success');
                 //redirect to home page for success login
-                // $state.go('app.home');
+                $state.go('app.home');
 
               }catch(e){
                 var message = 'Fail to login, please your username or password';
