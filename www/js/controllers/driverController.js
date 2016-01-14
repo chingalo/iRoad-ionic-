@@ -1,6 +1,6 @@
 angular.module('app')
 
-.controller('DriverController',function($scope,ionicToast){
+.controller('DriverController',function($scope,ionicToast,$localStorage,$http){
 
     $scope.data = {};
 
@@ -24,5 +24,22 @@ angular.module('app')
         }
       );
       $scope.verifyDriver();
+    };
+
+    $scope.defaultPhotoID = null;
+    getDriverPhoto();
+    function getDriverPhoto(){
+      var base = $localStorage.baseUrl;
+      var defaultPhotoUrl = base +'/api/documents.json?filter=name:eq:Default Driver Photo'
+      $http({
+        method : 'GET',
+        url : defaultPhotoUrl
+      }).success(function(response){
+
+        if(response.documents.length != 0){
+          $scope.defaultPhotoID = response.documents[0].id;
+        }
+      });
     }
+
   });
