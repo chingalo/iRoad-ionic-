@@ -18,6 +18,8 @@
   </feature>
 
   <gap:plugin name="cordova-plugin-whitelist" source="npm" version="~1" />
+  <plugin name="cordova-plugin-whitelist" version="~1" />
+  <plugin name="cordova-plugin-whitelist" spec="~1" />
 
   <access origin="http://*" />
   <feature name="http://api.phonegap.com/1.0/network"/>
