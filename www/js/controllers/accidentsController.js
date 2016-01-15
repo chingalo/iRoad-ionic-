@@ -3,7 +3,7 @@
  */
 angular.module('app')
 
-.controller('accidentController',function($scope,ionicToast,$localStorage,$cordovaCapture,$cordovaImagePicker){
+.controller('accidentController',function($scope,ionicToast,$localStorage,$cordovaCapture){
 
     $scope.reportingForms = {};
     $scope.data = {}
@@ -19,8 +19,7 @@ angular.module('app')
       ft.upload(path, encodeURI($localStorage.baseUrl + "/api/fileResources"), function(result) {
 
           var data = JSON.parse(result.response);
-          var message = dataElement +' has been uploaded Successfully : ' + data.response.fileResource.id;
-          progressMessage(message);
+          alert(data.response.fileResource.id);
           //$scope.newAccidentBasicInfo[dataElement] = data.response.fileResource.id;
           //$scope.$apply();
         },
