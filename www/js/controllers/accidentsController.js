@@ -83,6 +83,52 @@ angular.module('app')
         }
       });
       $scope.reportingForms.accidentWitnes = eventAccidentWitness;
+      console.log('Forms : ' + JSON.stringify($scope.reportingForms));
     }
+
+    //functions for flexible forms on offense
+    $scope.isInteger = function(key){
+      return $scope.is(key,"NUMBER");
+    };
+    $scope.isDate = function(key){
+      return $scope.is(key,"DATE");
+    };
+    $scope.isString = function(key){
+      return $scope.is(key,"TEXT");
+    };
+    $scope.isBoolean = function(key){
+      return $scope.is(key,"BOOLEAN");
+    };
+
+    $scope.is = function(key,dataType){
+      for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
+        if(iroad2.data.dataElements[j].name == key){
+          if(iroad2.data.dataElements[j].valueType == dataType){
+            return true;
+          }
+          break;
+        }
+      }
+      return false;
+    };
+    $scope.hasDataSets = function(key){
+      for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
+        if(iroad2.data.dataElements[j].name == key){
+          return (iroad2.data.dataElements[j].optionSet != undefined);
+
+        }
+      }
+      return false;
+    };
+    $scope.getOptionSets = function(key){
+      for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
+        if(iroad2.data.dataElements[j].name == key){
+          if(iroad2.data.dataElements[j].optionSet){
+            return iroad2.data.dataElements[j].optionSet.options;
+          }
+        }
+      }
+      return false;
+    };
 
 });
