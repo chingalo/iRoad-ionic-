@@ -3,7 +3,7 @@
  */
 angular.module('app')
 
-.controller('accidentController',function($scope,ionicToast,$localStorage,$cordovaCapture){
+  .controller('accidentController',function($scope,ionicToast,$localStorage,$state){
 
     $scope.reportingForms = {};
 
@@ -57,26 +57,12 @@ angular.module('app')
     //take video form camera
     $scope.takeVideo = function(){
 
-      var options = { limit: 1, duration: 15 };
-      $cordovaCapture.captureVideo(options).then(function(videoData) {
-        var message = 'data : ' + JSON.stringify(videoData);
-        progressMessage(message);
-      }, function(err) {
-        // An error occurred. Show a message to the user
-      });
-
+      navigator.device.capture.captureVideo(captureVideoSuccess, captureError, {limit: 1});
     };
     //take photo from camera
     $scope.takePhoto = function(){
 
-      var options = { limit: 1 };
-      $cordovaCapture.captureImage(options).then(function(imageData) {
-
-        var message = 'data : ' + JSON.stringify(imageData);
-        progressMessage(message);
-      }, function(err) {
-        // An error occurred. Show a message to the user
-      });
+      navigator.device.capture.captureImage(captureImageSuccess, captureError, {limit: 1});
     };
     //take photo from gallery
     $scope.selectImage = function(){
@@ -105,7 +91,7 @@ angular.module('app')
           });
         }
       });
-     $scope.reportingForms.basicInfo = eventAccident;
+      $scope.reportingForms.basicInfo = eventAccident;
 
       //loading accident vehicle form
       var accidentVehilce = new iroad2.data.Modal('Accident Vehicle',[]);
@@ -208,4 +194,4 @@ angular.module('app')
       return false;
     };
 
-});
+  });
