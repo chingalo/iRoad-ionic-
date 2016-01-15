@@ -7,6 +7,21 @@ angular.module('app')
 
     $scope.data = {};
 
+    //offense modal
+    $ionicModal.fromTemplateUrl('templates/offenseModal.html', {
+      scope: $scope
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+    $scope.openOffenseModal = function(){
+
+      $scope.modal.show();
+    };
+    $scope.closeOffenseModal = function(){
+
+      $scope.modal.hide();
+    };
+
     prepareOffenseForms();
     //function to prepare form for reporting offense
     function prepareOffenseForms(){

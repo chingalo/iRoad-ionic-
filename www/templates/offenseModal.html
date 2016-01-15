@@ -1,0 +1,30 @@
+<ion-modal-view>
+  <ion-header-bar>
+    <h1 class="title" >
+      Offenses List
+    </h1>
+    <div class="buttons">
+      <button class="button button-clear" ng-click="closeOffenseModal()">Close</button>
+    </div>
+  </ion-header-bar>
+  <ion-content>
+    <div class="row">
+      <div class="col col-100">
+        <label class="item item-input">
+          <i class="icon ion-ios-search-strong placeholder-icon"></i>
+          <input ng-model="search" type="search" placeholder="Filter Offense">
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-100">
+        <ion-list>
+          <ion-checkbox ng-model = 'reportingForms.offence.editInput[offenseRegistry.id]'  ng-repeat="offenseRegistry in reportingForms.editInput |filter: search" ng-change="offenseRegistry.selected = !offenseRegistry.selected">
+            {{ offenseRegistry.Nature }}
+          </ion-checkbox>
+        </ion-list>
+      </div>
+    </div>
+
+  </ion-content>
+</ion-modal-view>
