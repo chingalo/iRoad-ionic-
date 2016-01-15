@@ -3,7 +3,7 @@
  */
 angular.module('app')
 
-.controller('accidentController',function($scope,ionicToast,$localStorage){
+.controller('accidentController',function($scope,ionicToast,$localStorage,$cordovaCapture,$cordovaImagePicker){
 
     $scope.reportingForms = {};
     $scope.data = {}
@@ -11,29 +11,6 @@ angular.module('app')
     function progressMessage(message){
       ionicToast.show(message, 'bottom', false, 2000);
     }
-
-    var captureImageSuccess = function(mediaFiles) {
-      for (var i = 0; i < mediaFiles.length; i ++) {
-
-        var message = 'Photo Taken Successfully';
-        progressMessage(message);
-        uploadFile(mediaFiles[i],'Accident Image');
-      }
-    };
-    var captureVideoSuccess = function(mediaFiles) {
-      for (var i = 0; i < mediaFiles.length; i ++) {
-
-        var message = 'Video has been taken Successfully';
-        progressMessage(message);
-        uploadFile(mediaFiles[i],'Accident Video');
-      }
-    };
-    // Called if something bad happens.
-    var captureError =function() {
-
-      var message = 'Media capture Fail, please try again';
-      progressMessage(message);
-    };
 
     function uploadFile(mediaFile,dataElement) {
 
@@ -57,13 +34,34 @@ angular.module('app')
     //take video form camera
     $scope.takeVideo = function(){
 
-      navigator.device.capture.captureVideo(captureVideoSuccess, captureError, {limit: 1});
+      var options = { limit: 1, duration: 20 };
+      $cordovaCapture.captureVideo(options).then(function(videoData) {
+
+        uploadFile(videoData[0],'Accident Video');
+        var message = 'Video has been taken Successfully';
+        progressMessage(message);
+      }, function() {
+
+        var message = 'Fail to take video, please try again';
+        progressMessage(message);
+      });
+
     };
 
     //take photo from camera
     $scope.takePhoto = function(){
 
-      navigator.device.capture.captureImage(captureImageSuccess, captureError, {limit: 1});
+      var options = { limit: 1 };
+      $cordovaCapture.captureImage(options).then(function(imageData) {
+
+        uploadFile(imageData[0],'Accident Image');
+        var message = 'Photo Taken Successfully';
+        progressMessage(message);
+      }, function() {
+
+        var message = 'Fail to take photo, please try again';
+        progressMessage(message);
+      });
     };
     //take photo from gallery
     $scope.selectImage = function(){
