@@ -6,7 +6,7 @@ angular.module('app')
     $scope.data.loading = false;
 
     function progressMessage(message){
-      ionicToast.show(message, 'bottom', false, 1500);
+      ionicToast.show(message, 'bottom', false, 2000);
     }
     $scope.verifyDriver = function(){
 
@@ -37,11 +37,10 @@ angular.module('app')
             }
             $scope.data.loading = false;
             $scope.$apply();
-            console.log(JSON.stringify($scope.data.driver));
           }else{
             $scope.data.loading = false;
             $scope.$apply();
-            var message = 'Driver has not Found';
+            var message = 'Driver has not found';
             progressMessage(message);
           }
         });

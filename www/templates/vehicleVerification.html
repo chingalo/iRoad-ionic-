@@ -17,5 +17,27 @@
       </div>
     </div>
 
+    <div class="row" ng-if="data.vehicle">
+      <div class="col col-100">
+        <div class="item " >
+          <h2>{{ data.vehicle['Vehicle Plate Number/Registration Number'] }}</h2>
+          <p>{{ data.vehicle['Make'] }} {{ data.vehicle['Model'] }}</p>
+          <p>Color : {{ data.vehicle['Color'] }}</p>
+        </div>
+        <div class="item item-body">
+          <p ng-repeat="(key,value) in data.vehicle"  ng-if = "key == 'Body Type' || key == 'Chasis Numberr'|| key == 'Number of Axial Seating'|| key == 'Capacity Engine Capacity'|| key == 'Model number' || key == 'Current License Expiry Date' || key == 'Vehicle Class' || key == 'Year of Make' ">
+            {{ key }} : <br>
+            <span style="color: #007aff;">{{ data.vehicle[key] }}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" ng-if = "data.loading" style="text-align: center;font-size: 14px;margin-top: 2%;">
+      <div class="col col-100">
+        <ion-spinner icon="ios"></ion-spinner>
+      </div>
+    </div>
+
   </ion-content>
 </ion-view>
