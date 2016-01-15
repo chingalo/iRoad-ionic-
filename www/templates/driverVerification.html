@@ -32,8 +32,8 @@
 
         <div class="item item-body">
           <p ng-repeat="(key,value) in data.driver"  ng-if = " key == 'TIN Number' || key == 'Driving Class Name' || key == 'Phone Number' ">
-            {{ key }} : <br>
-            <span style="color: #007aff;">{{ data.driver[key] }}</span>
+            <b>{{ key }} : </b><br>
+            <span >{{ data.driver[key] }}</span>
           </p>
         </div>
       </div>
@@ -46,8 +46,8 @@
           <h2> Driver Rap sheet </h2>
         </div>
         <div class="item item-body">
-          <p>Number of accidents : <span style="color: #007aff;"> {{ data.accidentData.length }}</span></p>
-          <p>Number of Offenses : <span style="color: #007aff;"> {{ data.offenceData.length }} </span></p>
+          <p>Number of accidents : <b > {{ data.accidentData.length }}</b></p>
+          <p>Number of Offenses : <b > {{ data.offenceData.length }} </b></p>
 
           <button ng-if = "data.accidentData.length > 0" ng-click="rapSheetReport('accident')" class="button button-full button-positive">Accident History</button>
           <button ng-if = "data.offenceData.length > 0" ng-click="rapSheetReport('offense')" class="button button-full button-positive">Offense History</button>

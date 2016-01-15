@@ -8,7 +8,8 @@ angular.module('app', [
   'ionic',
   'ionic-toast',
   'ngStorage',
-  'ngCordova'
+  'ngCordova',
+  'ui.date'
 ])
 
   .run(function($ionicPlatform) {

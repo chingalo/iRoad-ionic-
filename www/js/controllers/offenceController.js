@@ -7,6 +7,48 @@ angular.module('app')
 
     $scope.data = {};
 
+    function progressMessage(message){
+      ionicToast.show(message, 'bottom', false, 2000);
+    }
+
+    //prepare data for submission
+    $scope.prepareOffenseDataForSubmission = function(){
+
+      pickSelectedOffenses($scope.reportingForms.editInput);
+
+      if($scope.data.reportedOffense.offenseList.length > 0){
+
+        console.log('data : ' + JSON.stringify($scope.data));
+      }
+      else{
+
+        var message = 'Please select at least one offense';
+        progressMessage(message)
+      }
+    };
+
+    function pickSelectedOffenses(offenses){
+
+      var selectedOffenses = [];
+      var amountTotal = 0;
+      angular.forEach(offenses,function(data){
+
+        if(data.selected){
+          selectedOffenses.push(data);
+        }
+      });
+
+      selectedOffenses.forEach(function(selectedOffense){
+
+        amountTotal += parseInt(selectedOffense.Amount);
+      });
+
+      $scope.data.reportedOffense = {
+        offenseList : selectedOffenses,
+        amount : amountTotal
+      };
+    }
+
     //offense modal
     $ionicModal.fromTemplateUrl('templates/offenseModal.html', {
       scope: $scope

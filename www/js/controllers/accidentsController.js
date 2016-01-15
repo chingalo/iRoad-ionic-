@@ -6,7 +6,7 @@ angular.module('app')
 .controller('accidentController',function($scope,ionicToast,$localStorage,$cordovaCapture){
 
     $scope.reportingForms = {};
-    $scope.data = {}
+    $scope.data = {};
 
     function progressMessage(message){
       ionicToast.show(message, 'bottom', false, 2000);
@@ -19,7 +19,6 @@ angular.module('app')
       ft.upload(path, encodeURI($localStorage.baseUrl + "/api/fileResources"), function(result) {
 
           var data = JSON.parse(result.response);
-          alert(data.response.fileResource.id);
           //$scope.newAccidentBasicInfo[dataElement] = data.response.fileResource.id;
           //$scope.$apply();
         },

@@ -6,9 +6,67 @@
           <h2 align="center">Reporting offense</h2>
         </div>
         <div class="item item-body">
-          {{ reportingForms.editInput }}
+          <!-- driver, vehicle and attendant -->
+          <div ng-repeat="(key,value) in reportingForms.dataElements" ng-if="key == 'Driver License Number' || key == 'Vehicle Plate Number/Registration Number'" >
+            <div class="col col-100">
+              <label class="item item-input item-floating-label" ng-if="key == 'Driver License Number'">
+                <span class="input-label">{{ key }}</span>
+                <input type="text" placeholder="{{ key }}" ng-model="data[key]">
+              </label>
+              <label class="item item-input item-floating-label" ng-if="key != 'Driver License Number'">
+                <span class="input-label">Vehicle Plate Number</span>
+                <input type="text" placeholder="Vehicle Plate Number" ng-model="data[key]">
+              </label>
+            </div>
+          </div>
+          <!-- attendant -->
+          <div class="col col-100">
+            <label class="item item-input item-floating-label">
+              <span class="input-label">Offense Attendant</span>
+              <input type="text" placeholder="Offense Attendant" ng-model="data.attendant">
+            </label>
+          </div>
+
+          <div ng-repeat="(key,value) in reportingForms.dataElements" ng-if="key == 'Offence Admission Status' || key == 'Offence Facts' || key == 'Offence Date'" >
+            <div class="col col-100">
+              <label class="item item-input item-floating-label" ng-if="isString(key) && !hasDataSets(key)" >
+                <span class="input-label">{{ key }}</span>
+                <input type="text" placeholder="{{ key }}" ng-model="data.newOffense[key]">
+              </label>
+              <label class="item item-input item-floating-label" ng-if="isInteger(key)" >
+                <span class="input-label">{{ key }}</span>
+                <input type="number" placeholder="{{ key }}" ng-model="data.newOffense[key]">
+              </label>
+              <label class="item item-input item-floating-label" ng-if="isDate(key)" >
+                <span class="input-label">{{ key }}</span>
+                <input type="text" ui-date placeholder="{{ key }}" ng-model="data.newOffense[key]">
+              </label>
+              <div class="item item-input item-select" ng-if="isBoolean(key)" >
+                <select ng-model="data.newOffense[key]">
+                  <option value="">Choose option</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+              <div ng-if="hasDataSets(key)">
+                {{key}}<br>
+                <div class="item item-input item-select" >
+                  <div class="input-label" >
+                  </div>
+                  <select ng-model="data.newOffense[key]">
+                    <option value="">Choose option</option>
+                    <option ng-repeat="item in getOptionSets(key)" > {{ item.name }}</option>
+                  </select>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+
+
           <button class="button button-full button-positive" ng-click="openOffenseModal()">Select Offenses</button>
-          <button class="button button-full button-positive">Next</button>
+          <button class="button button-full button-positive" ng-click="prepareOffenseDataForSubmission()">Next</button>
         </div>
       </div>
     </div>

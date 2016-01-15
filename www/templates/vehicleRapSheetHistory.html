@@ -5,7 +5,7 @@
       <span ng-if="data.rapSheetType == 'offense'">Offense History</span>
     </h1>
     <div class="buttons">
-      <button class="button button-clear" ng-click="closeRapSheetHistory()">Close</button>
+      <button class="button button-clear" ng-click="closeRapSheetHistory()"><i class="icon ion-android-close"> </i> Close</button>
     </div>
   </ion-header-bar>
   <ion-content>
@@ -15,14 +15,14 @@
       <div class="col col-100">
         <div class="card" ng-repeat="accident in data.accidentData">
           <div class="item item-text-wrap">
-            <span>Driver Name</span><br>
-            <span style="color: #007aff;">{{accident.Driver['Full Name']}}</span><br>
-            <span>Driver License Name</span><br>
-            <span style="color: #007aff;">{{accident.Driver['Driver License Number']}}</span><br>
-            <span>Area of Accident </span><br>
-            <span style="color: #007aff;">{{accident.Accident['Area of Accident']}}</span><br>
-            <span>Date &amp; Time of Accident </span><br>
-            <span style="color: #007aff;">{{accident.Accident['Time of Accident']}}</span><br>
+            <span><b>Driver Name</b></span><br>
+            <span >{{accident.Driver['Full Name']}}</span><br>
+            <span><b>Driver License Name</b></span><br>
+            <span >{{accident.Driver['Driver License Number']}}</span><br>
+            <span><b>Area of Accident </b></span><br>
+            <span >{{accident.Accident['Area of Accident']}}</span><br>
+            <span><b>Date &amp; Time of Accident </b></span><br>
+            <span >{{accident.Accident['Time of Accident']}}</span><br>
           </div>
         </div>
       </div>
@@ -32,14 +32,14 @@
       <div class="col col-100">
         <div class="card" ng-repeat="offense in data.offenceData">
           <div class="item item-text-wrap">
-            <span>Driver Name</span><br>
-            <span style="color: #007aff;">{{offense.Driver['Full Name']}}</span><br>
-            <span>Driver License Name</span><br>
-            <span style="color: #007aff;">{{offense.Driver['Driver License Number']}}</span><br>
-            <span>Area of Offense</span><br>
-            <span style="color: #007aff;">{{offense['Offence Place']}}</span><br>
-            <span>Offence Date</span><br>
-            <span style="color: #007aff;">{{offense['Offence Date']}}</span><br>
+            <span><b>Driver Nam</b>e</span><br>
+            <span >{{offense.Driver['Full Name']}}</span><br>
+            <span><b>Driver License Name</b></span><br>
+            <span >{{offense.Driver['Driver License Number']}}</span><br>
+            <span><b>Area of Offense</b></span><br>
+            <span >{{offense['Offence Place']}}</span><br>
+            <span><b>Offence Date</b></span><br>
+            <span >{{offense['Offence Date']}}</span><br>
           </div>
         </div>
       </div>
