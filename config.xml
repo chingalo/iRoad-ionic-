@@ -41,18 +41,42 @@
 
   <icon src="ic_launcher.png" width="170" height="170" />
 
-  <!--third party plugin-->
-  <plugin name="com.phonegap.plugins.barcodescanner" spec="2.0.0" source="pgb" />
+  <preference name="permissions" value="none" />
+  <preference name="orientation" value="default" />
+  <preference name="target-device" value="universal" />
+  <preference name="fullscreen" value="false" />
+  <preference name="webviewbounce" value="true" />
+  <preference name="prerendered-icon" value="true" />
+  <preference name="stay-in-webview" value="false" />
+  <preference name="ios-statusbarstyle" value="black-opaque" />
+  <preference name="detect-data-types" value="true" />
+  <preference name="exit-on-suspend" value="false" />
+  <preference name="show-splash-screen-spinner" value="true" />
+  <preference name="auto-hide-splash-screen" value="true" />
+  <preference name="disable-cursor" value="false" />
+  <preference name="android-minSdkVersion" value="7" />
+  <preference name="android-installLocation" value="auto" />
+
+  <gap:plugin name="org.apache.cordova.battery-status" source = "pgb"/>
+  <gap:plugin name="org.apache.cordova.camera" source = "pgb"/>
   <gap:plugin name="org.apache.cordova.media-capture" source = "pgb"/>
+  <gap:plugin name="org.apache.cordova.console" source = "pgb"/>
   <gap:plugin name="org.apache.cordova.contacts" source = "pgb"/>
   <gap:plugin name="org.apache.cordova.device" source = "pgb"/>
   <gap:plugin name="org.apache.cordova.device-motion" source = "pgb"/>
+  <gap:plugin name="org.apache.cordova.device-orientation" source = "pgb"/>
+  <gap:plugin name="org.apache.cordova.dialogs" source = "pgb"/>
   <gap:plugin name="org.apache.cordova.file" source = "pgb"/>
   <gap:plugin name="org.apache.cordova.file-transfer" source = "pgb"/>
   <gap:plugin name="org.apache.cordova.geolocation" source = "pgb"/>
   <gap:plugin name="org.apache.cordova.inappbrowser" source = "pgb"/>
   <gap:plugin name="org.apache.cordova.media" source = "pgb"/>
   <gap:plugin name="org.apache.cordova.network-information" source = "pgb" />
+  <gap:plugin name="org.apache.cordova.splashscreen" source = "pgb" />
+  <gap:plugin name="org.apache.cordova.vibration" source = "pgb"/>
+
+  <!--third party plugin-->
+  <plugin name="com.phonegap.plugins.barcodescanner" spec="2.0.0" source="pgb" />
 
 
 
