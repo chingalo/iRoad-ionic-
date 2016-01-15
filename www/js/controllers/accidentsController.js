@@ -14,7 +14,7 @@ angular.module('app')
 
     var captureImageSuccess = function(mediaFiles) {
       for (var i = 0; i < mediaFiles.length; i ++) {
-        $scope.media.image.data = mediaFiles[i];
+
         var message = 'Photo Taken Successfully';
         progressMessage(message);
         uploadFile(mediaFiles[i],'Accident Image');
@@ -37,7 +37,6 @@ angular.module('app')
 
     function uploadFile(mediaFile,dataElement) {
 
-      alert(JSON.stringify(mediaFile));
       var ft = new FileTransfer(),path = mediaFile.localURL;
       var options = {};
       ft.upload(path, encodeURI($localStorage.baseUrl + "/api/fileResources"), function(result) {
