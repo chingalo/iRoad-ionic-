@@ -6,21 +6,65 @@ angular.module('app')
 .controller('accidentController',function($scope,ionicToast,$localStorage,$state){
 
     $scope.reportingForms = {};
+
     function progressMessage(message){
       ionicToast.show(message, 'bottom', false, 2000);
     }
 
-    //take video camera
+    var captureImageSuccess = function(mediaFiles) {
+      for (var i = 0; i < mediaFiles.length; i ++) {
+
+        var message = 'Photo Taken Successfully';
+        progressMessage(message);
+        //uploadFile(mediaFiles[i],'Accident Image');
+      }
+    };
+
+    var captureVideoSuccess = function(mediaFiles) {
+      for (var i = 0; i < mediaFiles.length; i ++) {
+
+        var message = 'Video has been taken Successfully';
+        progressMessage(message);
+        //uploadFile(mediaFiles[i],'Accident Video');
+      }
+    };
+
+    // Called if something bad happens
+    var captureError =function(error) {
+
+      var message = 'Fail to capture media';
+      progressMessage(message);
+    };
+
+
+    function uploadFile(mediaFile,dataElement) {
+
+      var ft = new FileTransfer(),path = mediaFile.localURL;
+      var options = {};
+      ft.upload(path, encodeURI($localStorage.baseUrl + "/api/fileResources"), function(result) {
+
+          var data = JSON.parse(result.response);
+          //$scope.newAccidentBasicInfo[dataElement] = data.response.fileResource.id;
+          //$scope.$apply();
+        },
+        function() {
+
+          var message = 'Fail to upload ' + dataElement;
+          progressMessage(message);
+        }, options);
+    }
+
+    //take video form camera
     $scope.takeVideo = function(){
 
-      console.log('takeVideo');
+      navigator.device.capture.captureVideo(captureVideoSuccess, captureError, {limit: 1});
     };
-    //take video camera
+    //take photo from camera
     $scope.takePhoto = function(){
 
-      console.log('takePhoto');
+      navigator.device.capture.captureImage(captureImageSuccess, captureError, {limit: 1});
     };
-    //take video camera
+    //take photo from gallery
     $scope.selectImage = function(){
 
       console.log('selectImage');

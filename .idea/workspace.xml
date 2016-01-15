@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="86028476-47c5-466f-806a-bb19a9188e52" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/js/controllers/accidentsController.js" afterPath="$PROJECT_DIR$/www/js/controllers/accidentsController.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/reportAccident.html" afterPath="$PROJECT_DIR$/www/templates/reportAccident.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/www/templates/reportOffense.html" afterPath="$PROJECT_DIR$/www/templates/reportOffense.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config.xml" afterPath="$PROJECT_DIR$/config.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="iRoad.iws" />
@@ -29,11 +28,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="reportOffense.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="reportOffense.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www/templates/reportOffense.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.97959185" vertical-offset="0" max-vertical-offset="360">
+            <state vertical-scroll-proportion="-5.3333335" vertical-offset="0" max-vertical-offset="360">
               <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/config.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="1170">
+              <caret line="48" column="70" selection-start-line="48" selection-start-column="70" selection-end-line="48" selection-end-column="70" />
               <folding />
             </state>
           </provider>
@@ -77,11 +86,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="accidentsController.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="accidentsController.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/js/controllers/accidentsController.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="54" max-vertical-offset="2862">
-              <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
+            <state vertical-scroll-proportion="0.7419355" vertical-offset="0" max-vertical-offset="3582">
+              <caret line="23" column="23" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -128,12 +137,12 @@
         <option value="$PROJECT_DIR$/www/templates/vehicleRapSheetHistory.html" />
         <option value="$PROJECT_DIR$/www/templates/vehicleVerification.html" />
         <option value="$PROJECT_DIR$/www/js/controllers/vehicleController.js" />
-        <option value="$PROJECT_DIR$/config.xml" />
         <option value="$PROJECT_DIR$/www/templates/menu.html" />
         <option value="$PROJECT_DIR$/www/js/controllers/offenceController.js" />
-        <option value="$PROJECT_DIR$/www/js/controllers/accidentsController.js" />
         <option value="$PROJECT_DIR$/www/templates/reportAccident.html" />
         <option value="$PROJECT_DIR$/www/templates/reportOffense.html" />
+        <option value="$PROJECT_DIR$/config.xml" />
+        <option value="$PROJECT_DIR$/www/js/controllers/accidentsController.js" />
       </list>
     </option>
   </component>
@@ -486,14 +495,20 @@
       <option name="project" value="LOCAL" />
       <updated>1452846051171</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="media capture page ready for media captures">
+      <created>1452848667201</created>
+      <option name="number" value="00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1452848667201</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="1365" y="0" width="1282" height="720" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.6616667" sideWeight="0.4996277" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6616667" sideWeight="0.4996277" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32744783" sideWeight="0.5003723" order="7" side_tool="true" content_ui="tabs" />
@@ -566,7 +581,8 @@
     <MESSAGE value="edit menu as well as driver verification form" />
     <MESSAGE value="display driver verification data" />
     <MESSAGE value="add flexible function for inout field forms" />
-    <option name="LAST_COMMIT_MESSAGE" value="add flexible function for inout field forms" />
+    <MESSAGE value="media capture page ready for media captures" />
+    <option name="LAST_COMMIT_MESSAGE" value="media capture page ready for media captures" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -897,14 +913,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="990">
-          <caret line="1" column="58" selection-start-line="1" selection-start-column="58" selection-end-line="1" selection-end-column="58" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/menu.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0992647" vertical-offset="0" max-vertical-offset="1062">
@@ -951,14 +959,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/www/js/controllers/accidentsController.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="54" max-vertical-offset="2862">
-          <caret line="16" column="6" selection-start-line="16" selection-start-column="6" selection-end-line="16" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/vehicleVerification.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-11.333333" vertical-offset="486" max-vertical-offset="1170">
@@ -983,8 +983,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/www/templates/reportOffense.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.97959185" vertical-offset="0" max-vertical-offset="360">
+        <state vertical-scroll-proportion="-5.3333335" vertical-offset="0" max-vertical-offset="360">
           <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="612" max-vertical-offset="1170">
+          <caret line="48" column="70" selection-start-line="48" selection-start-column="70" selection-end-line="48" selection-end-column="70" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/www/js/controllers/accidentsController.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7419355" vertical-offset="0" max-vertical-offset="3582">
+          <caret line="23" column="23" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="44" />
           <folding />
         </state>
       </provider>

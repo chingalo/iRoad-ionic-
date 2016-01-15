@@ -43,6 +43,16 @@
 
   <!--third party plugin-->
   <plugin name="com.phonegap.plugins.barcodescanner" spec="2.0.0" source="pgb" />
+  <gap:plugin name="org.apache.cordova.media-capture" source = "pgb"/>
+  <gap:plugin name="org.apache.cordova.contacts" source = "pgb"/>
+  <gap:plugin name="org.apache.cordova.device" source = "pgb"/>
+  <gap:plugin name="org.apache.cordova.device-motion" source = "pgb"/>
+  <gap:plugin name="org.apache.cordova.file" source = "pgb"/>
+  <gap:plugin name="org.apache.cordova.file-transfer" source = "pgb"/>
+  <gap:plugin name="org.apache.cordova.geolocation" source = "pgb"/>
+  <gap:plugin name="org.apache.cordova.inappbrowser" source = "pgb"/>
+  <gap:plugin name="org.apache.cordova.media" source = "pgb"/>
+  <gap:plugin name="org.apache.cordova.network-information" source = "pgb" />
 
 
 
