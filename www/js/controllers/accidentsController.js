@@ -3,7 +3,7 @@
  */
 angular.module('app')
 
-.controller('accidentController',function($scope,ionicToast,$localStorage,$cordovaCapture){
+.controller('accidentController',function($scope,ionicToast,$localStorage,$cordovaCapture,$cordovaImagePicker){
 
     $scope.reportingForms = {};
 
@@ -63,7 +63,22 @@ angular.module('app')
     //take photo from gallery
     $scope.selectImage = function(){
 
-      console.log('selectImage');
+      var options = {
+        maximumImagesCount: 1,
+        width: 800,
+        height: 800,
+        quality: 80
+      };
+
+      $cordovaImagePicker.getPictures(options)
+        .then(function (results) {
+          var message  = 'Data : ' + JSON.stringify(results);
+          progressMessage(message);
+        }, function() {
+
+          var message = 'Fail to select photo, please try again';
+          progressMessage(message);
+        });
     };
 
     prepareAccidentForms();
