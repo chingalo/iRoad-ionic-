@@ -16,13 +16,13 @@
         </button>
       </div>
     </div>
-
+    <!-- vehicle verification data -->
     <div class="row" ng-if="data.vehicle">
       <div class="col col-100">
         <div class="item " >
           <h2>{{ data.vehicle['Vehicle Plate Number/Registration Number'] }}</h2>
           <p>{{ data.vehicle['Make'] }} {{ data.vehicle['Model'] }}</p>
-          <p>Color : {{ data.vehicle['Color'] }}</p>
+          <p><b>Color</b> : {{ data.vehicle['Color'] }}</p>
         </div>
         <div class="item item-body">
           <p ng-repeat="(key,value) in data.vehicle"  ng-if = "key == 'Body Type' || key == 'Chasis Numberr'|| key == 'Number of Axial Seating'|| key == 'Capacity Engine Capacity'|| key == 'Model number' || key == 'Current License Expiry Date' || key == 'Vehicle Class' || key == 'Year of Make' ">
@@ -31,6 +31,22 @@
           </p>
         </div>
       </div>
+    </div>
+    <!-- vehicle rap sheet -->
+    <div class="row" ng-if = "data.offenceData || data.accidentData" style=" padding-bottom: 15%;">
+      <div class="col col-100">
+        <div class="item item-avatar" >
+          <h2> Vehicle Rap sheet </h2>
+        </div>
+        <div class="item item-body">
+          <p>Number of accidents : <span style="color: #007aff;"> {{ data.accidentData.length }}</span></p>
+          <p>Number of Offenses : <span style="color: #007aff;"> {{ data.offenceData.length }} </span></p>
+
+          <button ng-if = "data.accidentData.length > 0" ng-click="rapSheetReport('accident')" class="button button-full button-positive">Accident History</button>
+          <button ng-if = "data.offenceData.length > 0" ng-click="rapSheetReport('offense')" class="button button-full button-positive">Offense History</button>
+        </div>
+      </div>
+
     </div>
 
     <div class="row" ng-if = "data.loading" style="text-align: center;font-size: 14px;margin-top: 2%;">

@@ -1,6 +1,6 @@
 angular.module('app')
 
-  .controller('vehicleController',function($scope,ionicToast){
+  .controller('vehicleController',function($scope,ionicToast,$ionicModal){
 
     $scope.data = {};
     $scope.data.loading = false;
@@ -35,7 +35,8 @@ angular.module('app')
           if(result.length > 0){
 
             $scope.data.vehicle = result[0];
-
+            getAccidentData(plateNumber);
+            getOffenseData(plateNumber);
           }else{
 
             var message = 'Vehicle has not found';
@@ -52,6 +53,52 @@ angular.module('app')
       }
     };
 
+    //getting rap sheet for a given vehicle
+    function getAccidentData(plateNumber){
 
+      $scope.data.loading = true;
+      var accidentModal = new  iroad2.data.Modal('Accident Vehicle',[]);
+      var accidents = [];
+      accidentModal.get(new iroad2.data.SearchCriteria('Vehicle Plate Number/Registration Number',"=",plateNumber),function(accidentResults){
+
+        for(var i = 0; i < accidentResults.length; i++){
+          var data = accidentResults[i];
+          if(!(JSON.stringify(data.Accident) === '{}' )){
+            accidents.push(data);
+          }
+        }
+        $scope.data.accidentData = accidents;
+        $scope.data.loading = false;
+        $scope.$apply();
+      });
+    }
+    function getOffenseData(plateNumber){
+
+      $scope.data.loading = true;
+      var offenseModal = new  iroad2.data.Modal('Offence Event',[]);
+      var offenses = [];
+      offenseModal.get(new iroad2.data.SearchCriteria('Vehicle Plate Number/Registration Number',"=",plateNumber),function(offensesResults){
+
+        $scope.data.offenceData = offensesResults;
+        $scope.data.loading = false;
+        $scope.$apply();
+      });
+    }
+
+    //show rap sheet for driver
+    $ionicModal.fromTemplateUrl('templates/vehicleRapSheetHistory.html', {
+      scope: $scope
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+    $scope.rapSheetReport = function(type){
+
+      $scope.data.rapSheetType = type;
+      $scope.modal.show();
+    };
+    $scope.closeRapSheetHistory = function(){
+
+      $scope.modal.hide();
+    };
 
   });
