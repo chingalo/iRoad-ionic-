@@ -6,6 +6,26 @@ angular.module('app')
 .controller('accidentController',function($scope,ionicToast,$localStorage,$state){
 
     $scope.reportingForms = {};
+    function progressMessage(message){
+      ionicToast.show(message, 'bottom', false, 2000);
+    }
+
+    //take video camera
+    $scope.takeVideo = function(){
+
+      console.log('takeVideo');
+    };
+    //take video camera
+    $scope.takePhoto = function(){
+
+      console.log('takePhoto');
+    };
+    //take video camera
+    $scope.selectImage = function(){
+
+      console.log('selectImage');
+    };
+
     prepareAccidentForms();
 
 
@@ -27,7 +47,6 @@ angular.module('app')
           });
         }
       });
-      console.log(eventAccident);
      $scope.reportingForms.basicInfo = eventAccident;
 
       //loading accident vehicle form

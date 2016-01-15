@@ -2,7 +2,34 @@
   <ion-content>
     <div class="row">
       <div class="col col-100">
-        {{ reportingForms | json }}
+        <div class="item" >
+          <h2 align="center">Reporting Accidents</h2>
+          <p align="center">Media Capture</p>
+        </div>
+        <div class="item item-body">
+          <div class="row">
+
+            <div class="col col-33">
+              <button ng-click="takePhoto()" type="button" class="button button-full button-positive">
+                <i class="icon ion-camera"></i>
+              </button>
+            </div>
+
+            <div class="col col-33">
+              <button ng-click="selectImage()" type="button" class="button button-full button-positive">
+                <i class="icon ion-images"></i>
+              </button>
+            </div>
+
+            <div class="col col-33">
+              <button ng-click="takeVideo()" type="button" class="button button-full button-positive">
+                <i class="icon ion-videocamera"></i>
+              </button>
+            </div>
+
+          </div>
+          <a href="#" class="button button-full button-positive">Report</a>
+        </div>
       </div>
     </div>
   </ion-content>
