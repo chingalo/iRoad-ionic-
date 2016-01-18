@@ -94,6 +94,7 @@ angular.module('app')
 
     //function to prepare accident vehicle form
     $scope.prepareAccidentVehicle = function(){
+
       var vehicles = $scope.data.numberOfVehicle;
       if(vehicles > 0){
 
@@ -116,8 +117,8 @@ angular.module('app')
 
     //function to move to to next vehicle or
 
-    $scope.initSignature = function(){
-      var canvas = document.getElementById('signatureCanvas');
+    $scope.initSignature = function(canvasId){
+      var canvas = document.getElementById(canvasId);
       $scope.signaturePad = new SignaturePad(canvas);
     };
     //functions for handle driver signatures
@@ -176,6 +177,8 @@ angular.module('app')
       if( vehicle < numberOfVehicles -1){
 
         $scope.accidentVehicleForm[vehicle].visibility = false;
+        $scope.accidentVehicleForm[vehicle].data = $scope.data.newAccidentVehicle;
+        $scope.data.newAccidentVehicle = {};
         $scope.accidentVehicleForm[vehicle + 1].visibility = true;
       }else{
 
@@ -197,6 +200,8 @@ angular.module('app')
       if(witness < numberOfWitness -1){
 
         $scope.accidentWitnesses[witness].visibility = false;
+        $scope.accidentWitnesses[witness].data = $scope.data.newAccidentWitness;
+        $scope.data.newAccidentWitness = {};
         $scope.accidentWitnesses[witness + 1].visibility = true;
       }else{
 
@@ -206,9 +211,10 @@ angular.module('app')
 
     function savingAccidentReportingData(){
 
-      var message = 'ready to save';
-      progressMessage(message);
-      toHomePage();
+      console.log('Accident Vehicle data : ' + JSON.stringify($scope.accidentVehicleForm));
+      console.log('accident witness data : ' + JSON.stringify($scope.accidentWitnesses));
+      console.log('Basic info for accident : ' + JSON.stringify($localStorage.newAccidentBasicInfoOtherData));
+     // toHomePage();
     }
 
     prepareAccidentForms();
