@@ -212,7 +212,7 @@
           <div class="col col-100">
             <b>Number of Witnesses</b><br>
             <label class="item item-input">
-              <input type="number" placeholder="Number of Witnesses" ng-model="data.licenseNumber">
+              <input type="number" placeholder="Number of Witnesses" ng-model="data.numberOfWitnesses">
             </label>
           </div>
           <div class="col col-100">
@@ -221,9 +221,13 @@
               <input type="text" placeholder="Accident Attendant" ng-model="data.accidentAttendant">
             </label>
           </div>
+
+          <button ng-click="prepareAccidentVehicle()" class="button button-full button-positive" >Report</button>
         </div>
       </div>
     </div>
+
+
 
   </ion-content>
 </ion-view>

@@ -239,6 +239,15 @@ angular.module('app', [
           }
         }
       })
+      .state('app.accidentVehicle', {
+        url: '/accident-vehicle',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/accidentVehicle.html',
+            controller : 'accidentController'
+          }
+        }
+      })
 
       .state('app.reportOffense', {
         url: '/report-offense',

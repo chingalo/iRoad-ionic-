@@ -8,6 +8,12 @@ angular.module('app')
     $scope.reportingForms = {};
     $scope.data = {};
 
+    //taking values form local storage if existed
+    if($localStorage.accidentVehicleForm){
+
+      $scope.accidentVehicleForm = $localStorage.accidentVehicleForm;
+    }
+
     function progressMessage(message){
       ionicToast.show(message, 'bottom', false, 2000);
     }
@@ -75,19 +81,53 @@ angular.module('app')
       $state.go('app.reportAccidentForm');
     };
 
+    $scope.prepareAccidentVehicle = function(){
+      var vehicles = $scope.data.numberOfVehicle;
+      if(vehicles){
+
+        $localStorage.newAccidentBasicInfoOtherData = $scope.data.newAccident;
+        prepareAccidentVehicleForm(vehicles);
+        $state.go('app.accidentVehicle');
+      }else{
+
+        var message = 'Please Enter Number of vehicle involved.';
+        progressMessage(message);
+      }
+    };
+
     $scope.initSignature = function(){
-      alert('1');
       var canvas = document.getElementById('signatureCanvas');
       $scope.signaturePad = new SignaturePad(canvas);
-      alert('2');
     };
     //functions for handle driver signatures
     $scope.clearCanvas = function() {
       $scope.signaturePad.clear();
     };
+
+    function prepareAccidentVehicleForm(vehicles){
+      var form = [];
+      for(var i =0; i < vehicles; i ++){
+
+        if(i === 0){
+          form.push({
+            visibility : true,
+            dataElement : $scope.reportingForms.accidentVehicle,
+            data :{},
+            passengers : []
+          });
+        }else{
+          form.push({
+            visibility : false,
+            dataElement : $scope.reportingForms.accidentVehicle,
+            data :{},
+            passengers : []
+          });
+        }
+      }
+      $localStorage.accidentVehicleForm = form;
+    }
+
     prepareAccidentForms();
-
-
     function prepareAccidentForms(){
 
       //load basic information for accident
