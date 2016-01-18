@@ -7,41 +7,45 @@
         </div>
         <div class="item item-body">
           <!-- driver, vehicle and attendant -->
-          <div ng-repeat="(key,value) in reportingForms.dataElements" ng-if="key == 'Driver License Number' || key == 'Vehicle Plate Number/Registration Number'" >
-            <div class="col col-100">
-              <label class="item item-input item-floating-label" ng-if="key == 'Driver License Number'">
-                <span class="input-label">{{ key }}</span>
-                <input type="text" placeholder="{{ key }}" ng-model="data[key]">
-              </label>
-              <label class="item item-input item-floating-label" ng-if="key != 'Driver License Number'">
-                <span class="input-label">Vehicle Plate Number</span>
-                <input type="text" placeholder="Vehicle Plate Number" ng-model="data[key]">
-              </label>
-            </div>
-          </div>
-          <!-- attendant -->
           <div class="col col-100">
-            <label class="item item-input item-floating-label">
-              <span class="input-label">Offense Attendant</span>
+            <b>Driver License Number</b><br>
+            <label class="item item-input">
+              <input type="text" placeholder="Driver License Number" ng-model="data.licenseNumber">
+            </label>
+          </div>
+          <div class="col col-100">
+            <b>Vehicle Plate Number</b><br>
+            <label class="item item-input">
+              <input type="text" placeholder="Vehicle Plate Number" ng-model="data.plateNumber">
+            </label>
+          </div>
+          <div class="col col-100">
+            <b>Offense Attendant</b><br>
+            <label class="item item-input">
               <input type="text" placeholder="Offense Attendant" ng-model="data.attendant">
             </label>
           </div>
-
+          <!-- Other form fields -->
           <div ng-repeat="(key,value) in reportingForms.dataElements" ng-if="key == 'Offence Admission Status' || key == 'Offence Facts' || key == 'Offence Date'" >
             <div class="col col-100">
-              <label class="item item-input item-floating-label" ng-if="isString(key) && !hasDataSets(key)" >
-                <span class="input-label">{{ key }}</span>
-                <input type="text" placeholder="{{ key }}" ng-model="data.newOffense[key]">
-              </label>
-              <label class="item item-input item-floating-label" ng-if="isInteger(key)" >
-                <span class="input-label">{{ key }}</span>
-                <input type="number" placeholder="{{ key }}" ng-model="data.newOffense[key]">
-              </label>
-              <label class="item item-input item-floating-label" ng-if="isDate(key)" >
-                <span class="input-label">{{ key }}</span>
-                <input type="text" ui-date placeholder="{{ key }}" ng-model="data.newOffense[key]">
-              </label>
-
+              <div ng-if="isInteger(key)">
+                <b>{{key}}</b><br>
+                <label class="item item-input">
+                  <input type="number" placeholder="{{ key }}" ng-model="data.newOffense[key]">
+                </label>
+              </div>
+              <div ng-if="isDate(key)">
+                <b>{{key}}</b><br>
+                <label class="item item-input">
+                  <input type="text" ui-date placeholder="{{ key }}" ng-model="data.newOffense[key]">
+                </label>
+              </div>
+              <div ng-if="isString(key) && !hasDataSets(key)">
+                <b>{{key}}</b><br>
+                <label class="item item-input">
+                  <input type="text" placeholder="{{ key }}" ng-model="data.newOffense[key]">
+                </label>
+              </div>
               <div ng-if="hasDataSets(key)">
                 <b>{{key}}</b><br>
                 <div class="item item-input item-select" >
