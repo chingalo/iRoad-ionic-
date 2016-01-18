@@ -1,0 +1,15 @@
+<ion-view view-title="">
+  <ion-content>
+    <div class="row" ng-repeat="witness in accidentWitnesses" ng-if = "witness.visibility">
+      <div class="col col-100">
+        <div class="item" >
+          <h2 align="center">Accident Witness {{ $index + 1}}</h2>
+        </div>
+        <div class="item item-body">
+          {{ witness }}
+          <button class="button-full button button-positive" ng-click="nextWitness($index)">Next</button>
+        </div>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

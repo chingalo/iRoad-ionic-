@@ -3,7 +3,7 @@
  */
 angular.module('app')
 
-.controller('accidentController',function($scope,ionicToast,$localStorage,$cordovaCapture,$state){
+.controller('accidentController',function($scope,ionicToast,$localStorage,$cordovaCapture,$state,$ionicHistory){
 
     $scope.reportingForms = {};
     $scope.data = {};
@@ -13,9 +13,21 @@ angular.module('app')
 
       $scope.accidentVehicleForm = $localStorage.accidentVehicleForm;
     }
+    if($localStorage.accidentWitnessForm){
+
+      $scope.accidentWitnesses = $localStorage.accidentWitnessForm;
+    }
 
     function progressMessage(message){
       ionicToast.show(message, 'bottom', false, 2000);
+    }
+    function toHomePage(){
+      $ionicHistory.clearCache().then(function() {
+
+        $ionicHistory.clearHistory();
+        $ionicHistory.nextViewOptions({ disableBack: true, historyRoot: true });
+        $state.go('app.home');
+      });
     }
 
     function uploadFile(mediaFile,dataElement) {
@@ -77,19 +89,19 @@ angular.module('app')
     //report form
     $scope.reportAccidentForm = function(){
 
-      console.log('Data : ' + JSON.stringify($scope.data));
       $state.go('app.reportAccidentForm');
     };
 
     //function to prepare accident vehicle form
     $scope.prepareAccidentVehicle = function(){
       var vehicles = $scope.data.numberOfVehicle;
-      if(vehicles){
+      if(vehicles > 0){
 
         $localStorage.newAccidentBasicInfoOtherData = $scope.data.newAccident;
         prepareAccidentVehicleForm(vehicles);
         var witnesses = $scope.data.numberOfWitnesses;
-        if(witnesses){
+        $localStorage.accidentWitnessForm = [];
+        if(witnesses > 0){
 
           prepareAccidentWitnessesForm(witnesses);
         }
@@ -155,6 +167,48 @@ angular.module('app')
         }
       }
       $localStorage.accidentVehicleForm = form;
+    }
+
+    //move to next vehicle or witness
+    $scope.nextVehicle = function(vehicle){
+
+      var numberOfVehicles = $scope.accidentVehicleForm.length;
+      if( vehicle < numberOfVehicles -1){
+
+        $scope.accidentVehicleForm[vehicle].visibility = false;
+        $scope.accidentVehicleForm[vehicle + 1].visibility = true;
+      }else{
+
+        var numberOfWitness = $scope.accidentWitnesses.length;
+        if(numberOfWitness > 0){
+
+          $state.go('app.accidentWitness');
+        }else{
+
+          savingAccidentReportingData();
+        }
+      }
+    };
+
+    //move to next witness
+    $scope.nextWitness = function(witness){
+
+      var numberOfWitness = $scope.accidentWitnesses.length;
+      if(witness < numberOfWitness -1){
+
+        $scope.accidentWitnesses[witness].visibility = false;
+        $scope.accidentWitnesses[witness + 1].visibility = true;
+      }else{
+
+        savingAccidentReportingData();
+      }
+    };
+
+    function savingAccidentReportingData(){
+
+      var message = 'ready to save';
+      progressMessage(message);
+      toHomePage();
     }
 
     prepareAccidentForms();
@@ -231,7 +285,6 @@ angular.module('app')
         }
       });
       $scope.reportingForms.accidentWitnes = eventAccidentWitness;
-      console.log('Forms : ' + JSON.stringify($scope.reportingForms));
     }
 
     //functions for flexible forms on offense

@@ -1,6 +1,27 @@
 <ion-view view-title="">
   <ion-content>
-    accident vehicle forms
-    {{ accidentVehicleForm }}
+    <div class="row" ng-repeat="vehicle in accidentVehicleForm" ng-if = "vehicle.visibility">
+      <div class="col col-100">
+        <div class="item" >
+          <h2 align="center">Accident Vehicle {{ $index + 1}}</h2>
+        </div>
+        <div class="item item-body">
+
+          <div class="col col-100">
+            <b>Vehicle Plate Number</b><br>
+            <label class="item item-input">
+              <input type="text" placeholder="Vehicle Plate Number" ng-model="data.plateNumber">
+            </label>
+          </div>
+          <div class="col col-100">
+            <b>Driver Licence Number</b><br>
+            <label class="item item-input">
+              <input type="text" placeholder="Driver Licence Number" ng-model="data.licenceNumber">
+            </label>
+          </div>
+          <button class="button-full button button-positive" ng-click="nextVehicle($index)">Next</button>
+        </div>
+      </div>
+    </div>
   </ion-content>
 </ion-view>

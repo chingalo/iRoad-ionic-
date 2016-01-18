@@ -11,6 +11,15 @@ angular.module('app')
       ionicToast.show(message, 'bottom', false, 2000);
     }
 
+    function toHomePage(){
+      $ionicHistory.clearCache().then(function() {
+
+        $ionicHistory.clearHistory();
+        $ionicHistory.nextViewOptions({ disableBack: true, historyRoot: true });
+        $state.go('app.home');
+      });
+    }
+
     //prepare data for submission
     $scope.prepareOffenseDataForSubmission = function(){
 

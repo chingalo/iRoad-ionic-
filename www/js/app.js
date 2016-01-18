@@ -28,7 +28,7 @@ angular.module('app', [
     });
   })
 
-  .controller('mainController',function($scope,$ionicModal,ionicToast,$localStorage,$state){
+  .controller('mainController',function($scope,$ionicModal,ionicToast,$localStorage,$state,$ionicHistory){
 
     $scope.data = {};
     var url = 'http://roadsafety.go.tz/demo';
@@ -179,14 +179,28 @@ angular.module('app', [
     //home button redirection
     $scope.reportAccident =  function(){
 
-      $state.go('app.reportAccident');
+      goToSideMenuPape('app.reportAccident');
     };
     $scope.reportOffense =  function(){
 
-      $state.go('app.reportOffense');
+      goToSideMenuPape('app.reportOffense');
     };
+    $scope.driverVerification = function(){
 
+      goToSideMenuPape('app.driverVerification');
+    };
+    $scope.vehicleVerification = function(){
 
+      goToSideMenuPape('app.vehicleVerification');
+    };
+    function goToSideMenuPape(state){
+      $ionicHistory.clearCache().then(function() {
+
+        $ionicHistory.clearHistory();
+        $ionicHistory.nextViewOptions({ disableBack: true, historyRoot: true });
+        $state.go(state);
+      });
+    }
   })
   .config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
@@ -244,6 +258,15 @@ angular.module('app', [
         views: {
           'menuContent': {
             templateUrl: 'templates/accidentVehicle.html',
+            controller : 'accidentController'
+          }
+        }
+      })
+      .state('app.accidentWitness', {
+        url: '/accident-vehicle',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/accidentWitness.html',
             controller : 'accidentController'
           }
         }
