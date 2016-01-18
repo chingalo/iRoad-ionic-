@@ -81,12 +81,19 @@ angular.module('app')
       $state.go('app.reportAccidentForm');
     };
 
+    //function to prepare accident vehicle form
     $scope.prepareAccidentVehicle = function(){
       var vehicles = $scope.data.numberOfVehicle;
       if(vehicles){
 
         $localStorage.newAccidentBasicInfoOtherData = $scope.data.newAccident;
         prepareAccidentVehicleForm(vehicles);
+        var witnesses = $scope.data.numberOfWitnesses;
+        if(witnesses){
+
+          prepareAccidentWitnessesForm(witnesses);
+        }
+
         $state.go('app.accidentVehicle');
       }else{
 
@@ -94,6 +101,8 @@ angular.module('app')
         progressMessage(message);
       }
     };
+
+    //function to move to to next vehicle or
 
     $scope.initSignature = function(){
       var canvas = document.getElementById('signatureCanvas');
@@ -103,6 +112,27 @@ angular.module('app')
     $scope.clearCanvas = function() {
       $scope.signaturePad.clear();
     };
+
+    function prepareAccidentWitnessesForm(witnesses){
+      var form =[];
+      for(var i = 0; i < witnesses; i ++){
+
+        if(i === 0){
+          form.push({
+            visibility : true,
+            dataElement : $scope.reportingForms.accidentWitnes,
+            data :{}
+          });
+        }else{
+          form.push({
+            visibility : false,
+            dataElement : $scope.reportingForms.accidentWitnes,
+            data :{}
+          });
+        }
+      }
+      $localStorage.accidentWitnessForm = form;
+    }
 
     function prepareAccidentVehicleForm(vehicles){
       var form = [];
