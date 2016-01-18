@@ -41,21 +41,27 @@
                 <span class="input-label">{{ key }}</span>
                 <input type="text" ui-date placeholder="{{ key }}" ng-model="data.newOffense[key]">
               </label>
-              <div class="item item-input item-select" ng-if="isBoolean(key)" >
-                <select ng-model="data.newOffense[key]">
-                  <option value="">Choose option</option>
-                  <option value="true">Yes</option>
-                  <option value="false">No</option>
-                </select>
-              </div>
+
               <div ng-if="hasDataSets(key)">
-                {{key}}<br>
+                <b>{{key}}</b><br>
                 <div class="item item-input item-select" >
                   <div class="input-label" >
                   </div>
                   <select ng-model="data.newOffense[key]">
                     <option value="">Choose option</option>
                     <option ng-repeat="item in getOptionSets(key)" > {{ item.name }}</option>
+                  </select>
+                </div>
+              </div>
+              <div ng-if="isBoolean(key)">
+                <b>{{key}}</b><br>
+                <div class="item item-input item-select" >
+                  <div class="input-label" >
+                  </div>
+                  <select ng-model="data.newOffense[key]">
+                    <option value="">Choose option</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
                   </select>
                 </div>
               </div>
