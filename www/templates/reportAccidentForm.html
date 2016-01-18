@@ -1,0 +1,229 @@
+<ion-view view-title="">
+  <ion-content>
+    <div class="row">
+      <div class="col col-100">
+        <div class="item" >
+          <h2 align="center">Basic info</h2>
+          <p align="center"></p>
+        </div>
+        <div class="item item-body">
+
+          <div ng-repeat="(key,value) in reportingForms.basicInfo" ng-if="key == 'Cause of Accident' || key == 'Accident Class' ||key == 'Accident Registration Number' ||key == 'Accident Type' || key == 'Accident Type Detail'" >
+            <div class="col col-100">
+              <div ng-if="isInteger(key)">
+                <b>{{key}}</b><br>
+                <label class="item item-input">
+                  <input type="number" placeholder="{{ key }}" ng-model="data.newAccident[key]">
+                </label>
+              </div>
+              <div ng-if="isDate(key)">
+                <b>{{key}}</b><br>
+                <label class="item item-input">
+                  <input type="text" ui-date placeholder="{{ key }}" ng-model="data.newAccident[key]">
+                </label>
+              </div>
+              <div ng-if="isString(key) && !hasDataSets(key)">
+                <b>{{key}}</b><br>
+                <label class="item item-input">
+                  <input type="text" placeholder="{{ key }}" ng-model="data.newAccident[key]">
+                </label>
+              </div>
+              <div ng-if="hasDataSets(key)">
+                <b>{{key}}</b><br>
+                <div class="item item-input item-select" >
+                  <div class="input-label" >
+                  </div>
+                  <select ng-model="data.newAccident[key]">
+                    <option value="">Choose option</option>
+                    <option ng-repeat="item in getOptionSets(key)" > {{ item.name }}</option>
+                  </select>
+                </div>
+              </div>
+              <div ng-if="isBoolean(key)">
+                <b>{{key}}</b><br>
+                <div class="item item-input item-select" >
+                  <div class="input-label" >
+                  </div>
+                  <select ng-model="data.newAccident[key]">
+                    <option value="">Choose option</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-100">
+        <div class="item" >
+          <h2 align="center">Time and Location</h2>
+          <p align="center"></p>
+        </div>
+        <div class="item item-body">
+
+          <div ng-repeat="(key,value) in reportingForms.basicInfo" ng-if="key == 'Time of Accident' ||key == 'Road Number' ||key == 'Road Name' ||key == 'Road Mark' ||key == 'Area of Accident' ||key == 'Intersection Mark' ||key == 'Intersection Name' || key == 'Intersection Number'" >
+            <div class="col col-100">
+              <div ng-if="isInteger(key)">
+                <b>{{key}}</b><br>
+                <label class="item item-input">
+                  <input type="number" placeholder="{{ key }}" ng-model="data.newAccident[key]">
+                </label>
+              </div>
+              <div ng-if="isDate(key)">
+                <b>{{key}}</b><br>
+                <label class="item item-input">
+                  <input type="text" ui-date placeholder="{{ key }}" ng-model="data.newAccident[key]">
+                </label>
+              </div>
+              <div ng-if="isString(key) && !hasDataSets(key)">
+                <b>{{key}}</b><br>
+                <label class="item item-input">
+                  <input type="text" placeholder="{{ key }}" ng-model="data.newAccident[key]">
+                </label>
+              </div>
+              <div ng-if="hasDataSets(key)">
+                <b>{{key}}</b><br>
+                <div class="item item-input item-select" >
+                  <div class="input-label" >
+                  </div>
+                  <select ng-model="data.newAccident[key]">
+                    <option value="">Choose option</option>
+                    <option ng-repeat="item in getOptionSets(key)" > {{ item.name }}</option>
+                  </select>
+                </div>
+              </div>
+              <div ng-if="isBoolean(key)">
+                <b>{{key}}</b><br>
+                <div class="item item-input item-select" >
+                  <div class="input-label" >
+                  </div>
+                  <select ng-model="data.newAccident[key]">
+                    <option value="">Choose option</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-100">
+        <div class="item" >
+          <h2 align="center">Other Information</h2>
+          <p align="center"></p>
+        </div>
+        <div class="item item-body">
+
+          <div ng-repeat="(key,value) in reportingForms.basicInfo" ng-if="!(key == 'Comment/Observations On accident' || key == 'Signature' ||key == 'Accident Image' || key == 'Accident Video' || key == 'Accident Description Image' || key == 'Cause of Accident' || key == 'Accident Class' ||key == 'Accident Registration Number' ||key == 'Accident Type' || key == 'Accident Type Detail'||key == 'Time of Accident' ||key == 'Road Number' ||key == 'Road Name' ||key == 'Road Mark' ||key == 'Area of Accident' ||key == 'Intersection Mark' ||key == 'Intersection Name' || key == 'Intersection Number')" >
+            <div class="col col-100">
+              <div ng-if="isInteger(key)">
+                <b>{{key}}</b><br>
+                <label class="item item-input">
+                  <input type="number" placeholder="{{ key }}" ng-model="data.newAccident[key]">
+                </label>
+              </div>
+              <div ng-if="isDate(key)">
+                <b>{{key}}</b><br>
+                <label class="item item-input">
+                  <input type="text" ui-date placeholder="{{ key }}" ng-model="data.newAccident[key]">
+                </label>
+              </div>
+              <div ng-if="isString(key) && !hasDataSets(key)">
+                <b>{{key}}</b><br>
+                <label class="item item-input">
+                  <input type="text" placeholder="{{ key }}" ng-model="data.newAccident[key]">
+                </label>
+              </div>
+              <div ng-if="hasDataSets(key)">
+                <b>{{key}}</b><br>
+                <div class="item item-input item-select" >
+                  <div class="input-label" >
+                  </div>
+                  <select ng-model="data.newAccident[key]">
+                    <option value="">Choose option</option>
+                    <option ng-repeat="item in getOptionSets(key)" > {{ item.name }}</option>
+                  </select>
+                </div>
+              </div>
+              <div ng-if="isBoolean(key)">
+                <b>{{key}}</b><br>
+                <div class="item item-input item-select" >
+                  <div class="input-label" >
+                  </div>
+                  <select ng-model="data.newAccident[key]">
+                    <option value="">Choose option</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div ng-repeat="(key,value) in reportingForms.basicInfo">
+            <div ng-if="key=='Comment/Observations On accident'">
+              <b>{{key}}</b><br>
+              <label class="item item-input">
+                <textarea placeholder="{{ key }}" ng-model="data.newAccident[key]"></textarea>
+              </label>
+            </div>
+            <div ng-if="key == 'Signature'">
+              <b>{{key}}</b><br>
+              <div class="row">
+                <button class="button button-full button-positive col col-33" ng-click="initSignature()">
+                  <i class="fa fa-pencil-square-o" ></i>
+                </button>
+                <button class="button button-full button-positive col col-33">
+                  <i class="fa fa-floppy-o" ></i>
+                </button>
+                <button class="button button-full button-positive col col-33" ng-click="clearCanvas()">
+                  <i class="fa fa-undo" ></i>
+                </button>
+              </div>
+              <canvas id='signatureCanvas' class="col col-100" height='200' style='border: 1px solid black;'></canvas>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-100">
+        <div class="item" >
+          <h2 align="center">Vehicle, Witness and Attendants</h2>
+          <p align="center"></p>
+        </div>
+        <div class="item item-body">
+          <div class="col col-100">
+            <b>Number Of Vehicles</b><br>
+            <label class="item item-input">
+              <input type="number" placeholder="Number Of Vehicles" ng-model="data.numberOfVehicle">
+            </label>
+          </div>
+          <div class="col col-100">
+            <b>Number of Witnesses</b><br>
+            <label class="item item-input">
+              <input type="number" placeholder="Number of Witnesses" ng-model="data.licenseNumber">
+            </label>
+          </div>
+          <div class="col col-100">
+            <b>Accident Attendant</b><br>
+            <label class="item item-input">
+              <input type="text" placeholder="Accident Attendant" ng-model="data.accidentAttendant">
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </ion-content>
+</ion-view>

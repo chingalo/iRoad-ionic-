@@ -18,12 +18,29 @@ angular.module('app')
 
       if($scope.data.reportedOffense.offenseList.length > 0){
 
-        console.log('data : ' + JSON.stringify($scope.data));
+        var vehiclePlateNumber = $scope.data.licenseNumber;
+        var driverLicenceNumber = $scope.data.plateNumber;
+        if(driverLicenceNumber){
+          if(vehiclePlateNumber){
+
+            console.log('Data : '+JSON.stringify($scope.data));
+            var message = 'Data ready for submission';
+            progressMessage(message);
+          }else{
+
+            var message = 'Please Enter Vehicle Plate Number';
+            progressMessage(message);
+          }
+        }else{
+
+          var message = 'Please Enter Driver License Number';
+          progressMessage(message);
+        }
       }
       else{
 
         var message = 'Please select at least one offense';
-        progressMessage(message)
+        progressMessage(message);
       }
     };
 

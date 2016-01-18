@@ -230,6 +230,15 @@ angular.module('app', [
           }
         }
       })
+      .state('app.reportAccidentForm', {
+        url: '/report-accident-form',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/reportAccidentForm.html',
+            controller : 'accidentController'
+          }
+        }
+      })
 
       .state('app.reportOffense', {
         url: '/report-offense',

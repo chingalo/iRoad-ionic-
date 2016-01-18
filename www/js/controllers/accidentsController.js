@@ -3,7 +3,7 @@
  */
 angular.module('app')
 
-.controller('accidentController',function($scope,ionicToast,$localStorage,$cordovaCapture){
+.controller('accidentController',function($scope,ionicToast,$localStorage,$cordovaCapture,$state){
 
     $scope.reportingForms = {};
     $scope.data = {};
@@ -68,6 +68,23 @@ angular.module('app')
       progressMessage(message);
     };
 
+    //report form
+    $scope.reportAccidentForm = function(){
+
+      console.log('Data : ' + JSON.stringify($scope.data));
+      $state.go('app.reportAccidentForm');
+    };
+
+    $scope.initSignature = function(){
+      alert('1');
+      var canvas = document.getElementById('signatureCanvas');
+      $scope.signaturePad = new SignaturePad(canvas);
+      alert('2');
+    };
+    //functions for handle driver signatures
+    $scope.clearCanvas = function() {
+      $scope.signaturePad.clear();
+    };
     prepareAccidentForms();
 
 
