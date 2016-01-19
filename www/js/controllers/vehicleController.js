@@ -39,7 +39,7 @@ angular.module('app')
             getOffenseData(plateNumber);
           }else{
 
-            var message = 'Vehicle has not found';
+            var message = 'Vehicle has not been found';
             progressMessage(message);
           }
           $scope.data.loading = false;

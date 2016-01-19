@@ -1,0 +1,21 @@
+<ion-view view-title="">
+  <ion-content>
+    <div class="row">
+      <div class="col col-100">
+        <div class="item" >
+          <h2>Offense reporting confirmation</h2>
+        </div>
+        <div class="item item-body">
+          {{ reportedOffenseData }}
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row" ng-if = "data.loading" style="text-align: center;font-size: 14px;">
+      <div class="col col-100">
+        <ion-spinner icon="ios"></ion-spinner>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

@@ -296,6 +296,15 @@ angular.module('app', [
           }
         }
       })
+      .state('app.confirmReportingOffense', {
+        url: '/confirm-reporting-offense',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/confirmReportingOffense.html',
+            controller : 'offenseController'
+          }
+        }
+      })
 
       .state('app.driverVerification', {
         url: '/driver-verification',

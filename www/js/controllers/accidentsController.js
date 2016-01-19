@@ -132,6 +132,19 @@ angular.module('app')
             $scope.$apply();
             $state.go('app.accidentVehicle');
           });
+        }else{
+
+          $localStorage.newAccidentBasicInfoOtherData = $scope.data.newAccident;
+          prepareAccidentVehicleForm(vehicles);
+          var witnesses = $scope.data.numberOfWitnesses;
+          $localStorage.accidentWitnessForm = [];
+          if(witnesses > 0){
+
+            prepareAccidentWitnessesForm(witnesses);
+          }
+          $scope.data.loading = false;
+          $scope.$apply();
+          $state.go('app.accidentVehicle');
         }
 
       }else{
@@ -337,7 +350,7 @@ angular.module('app')
 
                   $scope.data.loading = false;
                   $scope.$apply();
-                  var message = 'Vehicle ' + (vehicle + 1) + ' has not found';
+                  var message = 'Vehicle ' + (vehicle + 1) + ' has not been found';
                   progressMessage(message);
                 }
                 $scope.$apply();
@@ -351,7 +364,7 @@ angular.module('app')
 
             $scope.data.loading = false;
             $scope.$apply();
-            var message = 'Driver on vehicle ' + (vehicle + 1) + ' has not found';
+            var message = 'Driver on vehicle ' + (vehicle + 1) + ' has not been found';
             progressMessage(message);
           }
           $scope.$apply();
@@ -395,6 +408,8 @@ angular.module('app')
     $scope.cancelAccidentReporting = function(){
 
       clearUploadedData();
+      $localStorage.accidentVehicleData = [];
+      $localStorage.accidentWitnessesData = [];
       toHomePage();
     };
 

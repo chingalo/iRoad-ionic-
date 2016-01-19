@@ -40,7 +40,7 @@ angular.module('app')
           }else{
             $scope.data.loading = false;
             $scope.$apply();
-            var message = 'Driver has not found';
+            var message = 'Driver has not been found';
             progressMessage(message);
           }
         });
