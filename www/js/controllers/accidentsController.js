@@ -7,6 +7,8 @@ angular.module('app')
 
     $scope.reportingForms = {};
     $scope.data = {};
+    $scope.data.newAccidentVehicle = {};
+    $scope.data.newAccidentWitness = {};
 
     //taking values form local storage if existed
     if($localStorage.accidentVehicleForm){
@@ -210,6 +212,7 @@ angular.module('app')
                   $scope.data.newAccidentVehicle['Make'] = vehicleData['Make'];
                   $scope.data.newAccidentVehicle['Model'] = vehicleData['Model'];
                   $scope.accidentVehicleForm[vehicle].data = $scope.data.newAccidentVehicle;
+                  //saving accident data to local storage
                   $localStorage.accidentVehicleData = $scope.accidentVehicleForm;
 
 
@@ -269,11 +272,20 @@ angular.module('app')
     //move to next witness
     $scope.nextWitness = function(witness){
 
+      //saving accident witness data to local storage
+      for(var key in $scope.data.newAccidentWitness){
+        if($scope.isDate(key)){
+          var date = formatDate($scope.data.newAccidentWitness[key]);
+          $scope.data.newAccidentWitness[key] = date;
+        }
+      }
+      $scope.accidentWitnesses[witness].data = $scope.data.newAccidentWitness;
+      $localStorage.accidentWitnessesData = $scope.accidentWitnesses;
+
       var numberOfWitness = $scope.accidentWitnesses.length;
       if(witness < numberOfWitness -1){
 
         $scope.accidentWitnesses[witness].visibility = false;
-        $scope.accidentWitnesses[witness].data = $scope.data.newAccidentWitness;
         $scope.data.newAccidentWitness = {};
         $scope.accidentWitnesses[witness + 1].visibility = true;
       }else{
@@ -285,9 +297,27 @@ angular.module('app')
     function savingAccidentReportingData(){
 
       console.log('Accident Vehicle data : ' + JSON.stringify($localStorage.accidentVehicleData));
-      console.log('accident witness data : ' + JSON.stringify($scope.accidentWitnesses));
+      console.log('accident witness data : ' + JSON.stringify($localStorage.accidentWitnessesData));
       console.log('Basic info for accident : ' + JSON.stringify($localStorage.newAccidentBasicInfoOtherData));
       // toHomePage();
+    }
+
+    function formatDate(dateValue){
+
+      var m,d = (new Date(dateValue));
+      m = d.getMonth() + 1;
+      var date = d.getFullYear() + '-';
+      if(m > 9){
+        date = date + m + '-';
+      }else{
+        date = date + '0' + m + '-';
+      }
+      if(d.getDate() > 9){
+        date = date + d.getDate();
+      }else{
+        date = date + '0' +d.getDate();
+      }
+      return date;
     }
 
     prepareAccidentForms();
