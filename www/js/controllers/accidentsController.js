@@ -3,7 +3,7 @@
  */
 angular.module('app')
 
-.controller('accidentController',function($scope,ionicToast,$localStorage,$cordovaCapture,$state,$ionicHistory){
+  .controller('accidentController',function($scope,ionicToast,$localStorage,$cordovaCapture,$state,$ionicHistory){
 
     $scope.reportingForms = {};
     $scope.data = {};
@@ -173,26 +173,99 @@ angular.module('app')
     //move to next vehicle or witness
     $scope.nextVehicle = function(vehicle){
 
-      var numberOfVehicles = $scope.accidentVehicleForm.length;
-      if( vehicle < numberOfVehicles -1){
 
-        $scope.accidentVehicleForm[vehicle].visibility = false;
-        $scope.accidentVehicleForm[vehicle].data = $scope.data.newAccidentVehicle;
-        $scope.data.newAccidentVehicle = {};
-        $scope.accidentVehicleForm[vehicle + 1].visibility = true;
+      if($scope.data.licenceNumber){
+
+        $scope.data.loading = true;
+        $scope.data.newAccidentVehicle['Licence Number'] = $scope.data.licenceNumber;
+        var driverModel =  new iroad2.data.Modal('Driver',[]);
+        driverModel.get({value:$scope.data.licenceNumber},function(driverList){
+
+          if(driverList.length > 0){
+
+            //driver data
+            var driver = driverList[0];
+            $scope.data.newAccidentVehicle['Full Name'] = driver['Full Name'];
+            $scope.data.newAccidentVehicle['Gender'] = driver['Gender'];
+            $scope.data.newAccidentVehicle['Date of Birth'] = driver['Date of Birth'];
+            $scope.data.newAccidentVehicle.Driver = driver;
+
+            if($scope.data.vehiclePlateNumber){
+
+              var plateNumber = $scope.data.vehiclePlateNumber.toUpperCase();
+              if(plateNumber.length == 7){
+
+                plateNumber  =  plateNumber.substr(0,4) + ' ' +plateNumber.substr(4);
+              }
+              var vehicleModel = new iroad2.data.Modal('Vehicle',[]);
+              $scope.data.newAccidentVehicle['Vehicle Plate Number/Registration Number'] = plateNumber;
+              vehicleModel.get({value:plateNumber},function(vehicleList){
+                if(vehicleList.length > 0){
+
+                  //vehicle data
+                  var vehicleData = vehicleList[0];
+                  $scope.data.newAccidentVehicle.Vehicle = vehicleData;
+                  $scope.data.newAccidentVehicle['Vehicle Ownership Category'] = vehicleData['Vehicle Ownership Category'];
+                  $scope.data.newAccidentVehicle['Vehicle Class'] = vehicleData['Vehicle Class'];
+                  $scope.data.newAccidentVehicle['Make'] = vehicleData['Make'];
+                  $scope.data.newAccidentVehicle['Model'] = vehicleData['Model'];
+                  $scope.accidentVehicleForm[vehicle].data = $scope.data.newAccidentVehicle;
+                  $localStorage.accidentVehicleData = $scope.accidentVehicleForm;
+
+
+                  var numberOfVehicles = $scope.accidentVehicleForm.length;
+                  if( vehicle < numberOfVehicles -1){
+
+                    $scope.accidentVehicleForm[vehicle].visibility = false;
+                    $scope.data.newAccidentVehicle = {};
+                    $scope.data.licenceNumber = '';
+                    $scope.data.vehiclePlateNumber = '';
+                    $scope.accidentVehicleForm[vehicle + 1].visibility = true;
+
+                    $scope.data.loading = false;
+                    $scope.$apply();
+                  }else{
+
+                    var numberOfWitness = $scope.accidentWitnesses.length;
+                    if(numberOfWitness > 0){
+
+                      $state.go('app.accidentWitness');
+                    }else{
+
+                      savingAccidentReportingData();
+                    }
+                  }
+                }else{
+
+                  $scope.data.loading = false;
+                  $scope.$apply();
+                  var message = 'Vehicle ' + (vehicle + 1) + ' has not found';
+                  progressMessage(message);
+                }
+                $scope.$apply();
+              });
+
+            }else{
+
+              var message = 'Please Enter Vehicle plate number';
+              progressMessage(message);
+            }
+
+          }else{
+
+            $scope.data.loading = false;
+            $scope.$apply();
+            var message = 'Driver on vehicle ' + (vehicle + 1) + ' has not found';
+            progressMessage(message);
+          }
+          $scope.$apply();
+        });
       }else{
 
-        var numberOfWitness = $scope.accidentWitnesses.length;
-        if(numberOfWitness > 0){
-
-          $state.go('app.accidentWitness');
-        }else{
-
-          savingAccidentReportingData();
-        }
+        var message = 'Please Enter Driver license number';
+        progressMessage(message);
       }
-    };
-
+    }
     //move to next witness
     $scope.nextWitness = function(witness){
 
@@ -211,10 +284,10 @@ angular.module('app')
 
     function savingAccidentReportingData(){
 
-      console.log('Accident Vehicle data : ' + JSON.stringify($scope.accidentVehicleForm));
+      console.log('Accident Vehicle data : ' + JSON.stringify($localStorage.accidentVehicleData));
       console.log('accident witness data : ' + JSON.stringify($scope.accidentWitnesses));
       console.log('Basic info for accident : ' + JSON.stringify($localStorage.newAccidentBasicInfoOtherData));
-     // toHomePage();
+      // toHomePage();
     }
 
     prepareAccidentForms();
@@ -236,7 +309,7 @@ angular.module('app')
           });
         }
       });
-     $scope.reportingForms.basicInfo = eventAccident;
+      $scope.reportingForms.basicInfo = eventAccident;
 
       //loading accident vehicle form
       var accidentVehilce = new iroad2.data.Modal('Accident Vehicle',[]);
@@ -338,4 +411,4 @@ angular.module('app')
       return false;
     };
 
-});
+  });
