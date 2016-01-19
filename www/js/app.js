@@ -45,6 +45,12 @@ angular.module('app', [
       }
     }
     $scope.data.baseUrl = $localStorage.baseUrl;
+    $localStorage.signatures = {
+      police : {},
+      driver : {},
+      witness : {}
+    };
+    $localStorage.media = {};
 
     $ionicModal.fromTemplateUrl('templates/setConfiguration.html', {
       scope: $scope

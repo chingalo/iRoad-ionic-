@@ -39,8 +39,9 @@ angular.module('app')
       ft.upload(path, encodeURI($localStorage.baseUrl + "/api/fileResources"), function(result) {
 
           var data = JSON.parse(result.response);
-          //$scope.newAccidentBasicInfo[dataElement] = data.response.fileResource.id;
-          //$scope.$apply();
+          var mediaData = $localStorage.media;
+          mediaData.dataElement = data.response.fileResource.id;
+          $localStorage.media = mediaData;
         },
         function() {
 
@@ -124,17 +125,80 @@ angular.module('app')
       }
     };
 
-    //function to move to to next vehicle or
-
+    //function to perform all operations on signature pad
     $scope.initSignature = function(canvasId){
       var canvas = document.getElementById(canvasId);
       $scope.signaturePad = new SignaturePad(canvas);
     };
-    //functions for handle driver signatures
     $scope.clearCanvas = function() {
       $scope.signaturePad.clear();
     };
+    $scope.saveSignature = function(type,dataElement,index) {
 
+      var url = $scope.signaturePad.toDataURL();
+      if(type  === 'police'){
+
+        uploadPoliceSignature(url,dataElement);
+      }
+      if(type  === 'driver'){
+
+        uploadDriverSignature(url,dataElement,index);
+      }
+      if(type  === 'witness'){
+
+        uploadWitnessSignature(url,dataElement);
+      }
+    };
+
+    function uploadPoliceSignature(url,dataElement){
+
+      var ft = new FileTransfer();
+      var options = {};
+      ft.upload(url, encodeURI($localStorage.url + "/api/fileResources"), function(result) {
+          var data = JSON.parse(result.response);
+          var signatureData = {
+            dataElement : dataElement,
+            value :data.response.fileResource.id
+          }
+          $localStorage.signatures.police = signatureData;
+        },
+        function() {
+        }, options);
+    }
+    function uploadDriverSignature(url,dataElement,index){
+
+      var ft = new FileTransfer();
+      var options = {};
+      ft.upload(url, encodeURI($localStorage.url + "/api/fileResources"), function(result) {
+          var data = JSON.parse(result.response);
+          var signatureData = $localStorage.signatures.driver;
+          signatureData[index] = {
+            dataElement : dataElement,
+            value :data.response.fileResource.id
+          }
+          $localStorage.signatures.driver = signatureData;
+        },
+        function() {
+        }, options);
+    }
+    function uploadWitnessSignature(url,dataElement){
+
+      var ft = new FileTransfer();
+      var options = {};
+      ft.upload(url, encodeURI($localStorage.url + "/api/fileResources"), function(result) {
+          var data = JSON.parse(result.response);
+          var signatureData = $localStorage.signatures.witness;
+          signatureData[index] = {
+            dataElement : dataElement,
+            value :data.response.fileResource.id
+          }
+          $localStorage.signatures.witness = signatureData;
+        },
+        function() {
+        }, options);
+    }
+
+    //function to preare accident witness form as well as accident vehicle form
     function prepareAccidentWitnessesForm(witnesses){
       var form =[];
       for(var i = 0; i < witnesses; i ++){
@@ -143,19 +207,20 @@ angular.module('app')
           form.push({
             visibility : true,
             dataElement : $scope.reportingForms.accidentWitnes,
+            index : i,
             data :{}
           });
         }else{
           form.push({
             visibility : false,
             dataElement : $scope.reportingForms.accidentWitnes,
+            index : i,
             data :{}
           });
         }
       }
       $localStorage.accidentWitnessForm = form;
     }
-
     function prepareAccidentVehicleForm(vehicles){
       var form = [];
       for(var i =0; i < vehicles; i ++){
@@ -165,6 +230,7 @@ angular.module('app')
             visibility : true,
             dataElement : $scope.reportingForms.accidentVehicle,
             data :{},
+            index : i,
             passengers : []
           });
         }else{
@@ -172,6 +238,7 @@ angular.module('app')
             visibility : false,
             dataElement : $scope.reportingForms.accidentVehicle,
             data :{},
+            index : i,
             passengers : []
           });
         }
@@ -312,7 +379,18 @@ angular.module('app')
       console.log('Accident Vehicle data : ' + JSON.stringify($localStorage.accidentVehicleData));
       console.log('accident witness data : ' + JSON.stringify($localStorage.accidentWitnessesData));
       console.log('Basic info for accident : ' + JSON.stringify($localStorage.newAccidentBasicInfoOtherData));
+      //clearUploadedData();
       // toHomePage();
+    }
+
+    function clearUploadedData(){
+
+      $localStorage.signatures = {
+        police : {},
+        vehicle : {},
+        witness : {}
+      };
+      $localStorage.media = {};
     }
 
     function formatDate(dateValue){
