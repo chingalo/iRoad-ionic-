@@ -100,6 +100,13 @@ angular.module('app')
       var vehicles = $scope.data.numberOfVehicle;
       if(vehicles > 0){
 
+        //format date form date picker
+        for(var key in $scope.data.newAccident){
+          if($scope.isDate(key)){
+            var date = formatDate($scope.data.newAccident[key]);
+            $scope.data.newAccident[key] = date;
+          }
+        }
         $localStorage.newAccidentBasicInfoOtherData = $scope.data.newAccident;
         prepareAccidentVehicleForm(vehicles);
         var witnesses = $scope.data.numberOfWitnesses;
@@ -213,6 +220,12 @@ angular.module('app')
                   $scope.data.newAccidentVehicle['Model'] = vehicleData['Model'];
                   $scope.accidentVehicleForm[vehicle].data = $scope.data.newAccidentVehicle;
                   //saving accident data to local storage
+                  for(var key in $scope.data.newAccidentVehicle){
+                    if($scope.isDate(key)){
+                      var date = formatDate($scope.data.newAccidentVehicle[key]);
+                      $scope.data.newAccidentVehicle[key] = date;
+                    }
+                  }
                   $localStorage.accidentVehicleData = $scope.accidentVehicleForm;
 
 
