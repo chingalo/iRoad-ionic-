@@ -1,0 +1,45 @@
+<ion-modal-view>
+    <ion-header-bar>
+      <h1 class="title" >
+        <span ng-if="data.rapSheetType == 'accident'">Accident History</span>
+        <span ng-if="data.rapSheetType == 'offense'">Offense History</span>
+      </h1>
+      <div class="buttons">
+        <button class="button button-clear" ng-click="closeRapSheetHistory()">Close</button>
+      </div>
+    </ion-header-bar>
+    <ion-content>
+
+      <!-- accident history -->
+      <div class="row" ng-if="data.rapSheetType == 'accident'">
+        <div class="col col-100">
+          <div class="card" ng-repeat="accident in data.accidentData">
+            <div class="item item-text-wrap">
+              <b>Vehicle Used</b><br>
+              <span >{{accident['Vehicle Plate Number/Registration Number']}}</span><br>
+              <b>Area of Accident </b><br>
+              <span >{{accident.Accident['Area of Accident']}}</span><br>
+              <b>Date &amp; Time of Accident </b><br>
+              <span >{{accident.Accident['Time of Accident']}}</span><br>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" ng-if="data.rapSheetType == 'offense'">
+        <div class="col col-100">
+          <div class="card" ng-repeat="offense in data.offenceData">
+            <div class="item item-text-wrap">
+              <b>Vehicle Used</b><br>
+              <span >{{offense['Vehicle Plate Number/Registration Number']}}</span><br>
+              <b>Area of Offense</b><br>
+              <span >{{offense['Offence Place']}}</span><br>
+              <b>Offence Date</b><br>
+              <span >{{offense['Offence Date']}}</span><br>
+            </div>
+          </div>
+        </div>
+      </div>
+
+   </ion-content>
+ </ion-modal-view>

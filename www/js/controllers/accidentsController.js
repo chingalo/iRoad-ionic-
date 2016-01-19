@@ -342,13 +342,11 @@ angular.module('app')
                 }
                 $scope.$apply();
               });
-
             }else{
 
               var message = 'Please Enter Vehicle plate number';
               progressMessage(message);
             }
-
           }else{
 
             $scope.data.loading = false;
@@ -467,6 +465,7 @@ angular.module('app')
               }
             }
             vehicle ++;
+            accidentVehicleEvent.Accident = savedAccidentBasicInfoEvent;
             var accidentVehicleModel =  new iroad2.data.Modal('Accident Vehicle',[]);
             accidentVehicleModel.save(accidentVehicleEvent,otherData,function(){
 
