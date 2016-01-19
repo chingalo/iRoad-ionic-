@@ -7,6 +7,7 @@ angular.module('app')
 
     $scope.reportingForms = {};
     $scope.data = {};
+    $scope.data.newAccident = {};
     $scope.data.newAccidentVehicle = {};
     $scope.data.newAccidentWitness = {};
 
@@ -108,16 +109,31 @@ angular.module('app')
             $scope.data.newAccident[key] = date;
           }
         }
-        $localStorage.newAccidentBasicInfoOtherData = $scope.data.newAccident;
-        prepareAccidentVehicleForm(vehicles);
-        var witnesses = $scope.data.numberOfWitnesses;
-        $localStorage.accidentWitnessForm = [];
-        if(witnesses > 0){
+        //find police attending accident
+        var attendant = $scope.data.accidentAttendant;
+        if(attendant){
 
-          prepareAccidentWitnessesForm(witnesses);
+          $scope.data.loading = true;
+          var accidentAttendantModal = new iroad2.data.Modal('Police',[]);
+          accidentAttendantModal.get({value:attendant},function(policeList){
+            if(policeList.length > 0){
+
+              $scope.data.newAccident.Police = policeList[0];
+            }
+            $localStorage.newAccidentBasicInfoOtherData = $scope.data.newAccident;
+            prepareAccidentVehicleForm(vehicles);
+            var witnesses = $scope.data.numberOfWitnesses;
+            $localStorage.accidentWitnessForm = [];
+            if(witnesses > 0){
+
+              prepareAccidentWitnessesForm(witnesses);
+            }
+            $scope.data.loading = false;
+            $scope.$apply();
+            $state.go('app.accidentVehicle');
+          });
         }
 
-        $state.go('app.accidentVehicle');
       }else{
 
         var message = 'Please Enter Number of vehicle involved.';
@@ -159,7 +175,7 @@ angular.module('app')
           var signatureData = {
             dataElement : dataElement,
             value :data.response.fileResource.id
-          }
+          };
           $localStorage.signatures.police = signatureData;
         },
         function() {
@@ -175,13 +191,13 @@ angular.module('app')
           signatureData[index] = {
             dataElement : dataElement,
             value :data.response.fileResource.id
-          }
+          };
           $localStorage.signatures.driver = signatureData;
         },
         function() {
         }, options);
     }
-    function uploadWitnessSignature(url,dataElement){
+    function uploadWitnessSignature(url,dataElement,index){
 
       var ft = new FileTransfer();
       var options = {};
@@ -191,14 +207,14 @@ angular.module('app')
           signatureData[index] = {
             dataElement : dataElement,
             value :data.response.fileResource.id
-          }
+          };
           $localStorage.signatures.witness = signatureData;
         },
         function() {
         }, options);
     }
 
-    //function to preare accident witness form as well as accident vehicle form
+    //function to prepare accident witness form as well as accident vehicle form
     function prepareAccidentWitnessesForm(witnesses){
       var form =[];
       for(var i = 0; i < witnesses; i ++){
@@ -295,7 +311,8 @@ angular.module('app')
                   }
                   $localStorage.accidentVehicleData = $scope.accidentVehicleForm;
 
-
+                  $scope.data.loading = false;
+                  $scope.$apply();
                   var numberOfVehicles = $scope.accidentVehicleForm.length;
                   if( vehicle < numberOfVehicles -1){
 
@@ -304,8 +321,6 @@ angular.module('app')
                     $scope.data.licenceNumber = '';
                     $scope.data.vehiclePlateNumber = '';
                     $scope.accidentVehicleForm[vehicle + 1].visibility = true;
-
-                    $scope.data.loading = false;
                     $scope.$apply();
                   }else{
 
@@ -315,7 +330,7 @@ angular.module('app')
                       $state.go('app.accidentWitness');
                     }else{
 
-                      savingAccidentReportingData();
+                      prepareSavingAccidentReportingData();
                     }
                   }
                 }else{
@@ -370,18 +385,103 @@ angular.module('app')
         $scope.accidentWitnesses[witness + 1].visibility = true;
       }else{
 
-        savingAccidentReportingData();
+        prepareSavingAccidentReportingData();
       }
     };
 
-    function savingAccidentReportingData(){
+    function prepareSavingAccidentReportingData(){
 
-      console.log('Accident Vehicle data : ' + JSON.stringify($localStorage.accidentVehicleData));
-      console.log('accident witness data : ' + JSON.stringify($localStorage.accidentWitnessesData));
-      console.log('Basic info for accident : ' + JSON.stringify($localStorage.newAccidentBasicInfoOtherData));
-      //clearUploadedData();
-      // toHomePage();
+      $state.go('app.confirmReportingAccident');
     }
+
+    $scope.cancelAccidentReporting = function(){
+
+      clearUploadedData();
+      toHomePage();
+    };
+
+    $scope.reportingAccident = function(){
+
+      $scope.data.loading = true;
+      var savedAccidentBasicInfoEvent = $localStorage.newAccidentBasicInfoOtherData;
+      var signatureData = $localStorage.signatures.police;
+      if(signatureData.dataElement){
+
+        savedAccidentBasicInfoEvent[signatureData.dataElement] = signatureData.value;
+        $localStorage.signatures.police = {};
+      }
+      var mediaFiles = $localStorage.media;
+      for(var key in mediaFiles){
+
+        savedAccidentBasicInfoEvent[key] = mediaFiles.key;
+      }
+      var accidentEventModal = new iroad2.data.Modal('Accident',[]);
+      var otherData = {orgUnit:$localStorage.loginUserData.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:formatDate(new Date())};
+      accidentEventModal.save(savedAccidentBasicInfoEvent,otherData,function(result){
+
+        if(result.response){
+
+          result = result.response;
+          savedAccidentBasicInfoEvent['id'] = result.importSummaries[0].reference;
+
+          //saving witness
+          var witnessList = $localStorage.accidentWitnessesData;
+          var allWitnessesSignatureData = $localStorage.signatures.witness;
+          $localStorage.signatures.witness = {};
+          if(witnessList.length > 0){
+
+            for(var i = 0; i < witnessList.length; i ++){
+
+              var witnessEvent = witnessList[i].data;
+              if(allWitnessesSignatureData[witnessList[i].index]){
+                var signature = allWitnessesSignatureData[witnessList[i].index];
+                if(signature.dataElement){
+
+                  witnessEvent[signature.dataElement] = signature.value;
+                }
+              }
+              witnessEvent.Accident = savedAccidentBasicInfoEvent;
+              var accidentWitnessModel = new iroad2.data.Modal('Accident Witness',[]);
+              accidentWitnessModel.save(witnessEvent,otherData,function(){
+
+              },function(){},accidentWitnessModel.getModalName());
+            }
+
+
+          }
+
+          //saving accident vehicles
+          var accidentVehicles = $localStorage.accidentVehicleData;
+          var allDriverSignaturesData = $localStorage.signatures.driver;
+          $localStorage.signatures.driver = {};
+          var vehicle = 0;
+          for(var j = 0; j < accidentVehicles.length; j ++){
+
+            var accidentVehicleEvent = accidentVehicles[j].data;
+            if(allDriverSignaturesData[accidentVehicles[j].index]){
+
+              var signatureData = allDriverSignaturesData[accidentVehicles[j].index];
+              if(signatureData.dataElement){
+
+                accidentVehicleEvent[signatureData.dataElement] = signatureData.value;
+              }
+            }
+            vehicle ++;
+            var accidentVehicleModel =  new iroad2.data.Modal('Accident Vehicle',[]);
+            accidentVehicleModel.save(accidentVehicleEvent,otherData,function(){
+
+              if(vehicle === accidentVehicles.length){
+
+                $scope.data.loading = false;
+                $scope.$apply();
+                $scope.cancelAccidentReporting();
+              }
+            },function(){},accidentVehicleModel.getModalName());
+          }
+        }
+      },function(){},accidentEventModal.getModalName());
+
+    };
 
     function clearUploadedData(){
 

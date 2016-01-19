@@ -277,6 +277,15 @@ angular.module('app', [
           }
         }
       })
+      .state('app.confirmReportingAccident', {
+        url: '/confirm-reporting-accident',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/confirmReportingAccident.html',
+            controller : 'accidentController'
+          }
+        }
+      })
 
       .state('app.reportOffense', {
         url: '/report-offense',
