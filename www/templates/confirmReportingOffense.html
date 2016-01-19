@@ -6,7 +6,33 @@
           <h2>Offense reporting confirmation</h2>
         </div>
         <div class="item item-body">
-          {{ reportedOffenseData }}
+          <div class="row" >
+            <div class="col col-100">
+              <p ng-repeat="selectedOffense in reportedOffenseData.selectedOffenses.offenseList">
+                {{ selectedOffense.Nature }}br>
+                <b>{{ selectedOffense.Amount | currency : 'Tsh ' : 2}}</b>
+              </p>
+              <p>
+                Total Amount<br>
+                <b>{{ reportedOffenseData.selectedOffenses.amount | currency : 'Tsh ' : 2}}</b>
+              </p>
+
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col col-50">
+              <button class="button button-positive button-full" ng-click="payNow()">
+                Pay now
+              </button>
+            </div>
+            <div class="col col-50">
+              <button class="button button-positive button-full" ng-click="payLater()">
+                Pay later
+              </button>
+            </div>
+          </div>
+
         </div>
 
       </div>

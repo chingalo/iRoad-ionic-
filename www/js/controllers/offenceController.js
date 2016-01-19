@@ -161,6 +161,66 @@ angular.module('app')
       $state.go('app.confirmReportingOffense');
     }
 
+    $scope.payNow = function(){
+
+      savingOffensesData('now');
+    };
+
+    $scope.payLater = function(){
+
+      savingOffensesData('later');
+    };
+
+    function savingOffensesData(paymentType){
+
+      var otherData = {orgUnit:$localStorage.loginUserData.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:formatDate(new Date())};
+      var offenseList = $scope.reportedOffenseData.selectedOffenses;
+      var offenseInputData = $scope.reportedOffenseData.offenseData;
+
+      $scope.data.loading = true;
+      var offenceEventModal = new iroad2.data.Modal("Offence Event",[]);
+      offenceEventModal.save(offenseInputData,otherData,function(result){
+        if(result.httpStatus){
+
+          var offenseSavingResponse = result.response;
+          var offenseId = offenseSavingResponse.importSummaries[0].reference;
+
+          var saveDataArray = [];
+          angular.forEach(offenseList,function(registry){
+            var off = {
+              "Offence_Event":{"id": offenseId},
+              "Offence_Registry":{"id":registry.id}
+            };
+            saveDataArray.push(off);
+          });
+          var i = 0;
+          var offence = new iroad2.data.Modal("Offence",[]);
+          offence.save(saveDataArray,otherData,function(){
+              i ++;
+              if(i == offenseList.length){
+
+                $scope.data.loading = false;
+                $scope.$apply();
+                if(paymentType == 'now'){
+                  alert('pay now');
+                }else{
+                  alert('pay later');
+                }
+              }
+            },function(){
+
+              $scope.data.loading = false;
+              $scope.$apply();
+            },
+            offence.getModalName());
+        }
+      },function(){
+
+        $scope.data.loading = false;
+        $scope.$apply();
+      },offenceEventModal.getModalName());
+    }
+
     function pickSelectedOffenses(offenses){
 
       var selectedOffenses = [];
@@ -243,8 +303,6 @@ angular.module('app')
         });
         $scope.editInputModal.push(registry);
       });
-
-      console.log('Forms : ' + JSON.stringify($scope.reportingForms));
     }
 
     //functions for flexible forms on offense
