@@ -76,8 +76,16 @@
               <div ng-if="isDate(key)">
                 <b>{{key}}</b><br>
                 <label class="item item-input">
+                  <i class="icon ion-ios-calendar-outline placeholder-icon item-icon-right"></i>
                   <input type="text" ui-date placeholder="{{ key }}" ng-model="data.newAccident[key]">
                 </label>
+                <div style="margin: 2%;"></div>
+                <ionic-timepicker input-obj="timePickerObject12Format">
+                  <label class="item item-input">
+                    <i class="icon ion-clock placeholder-icon item-icon-right"></i>
+                    <input type="text" placeholder="Select time" ng-model="data.time12format">
+                  </label>
+                </ionic-timepicker>
               </div>
               <div ng-if="isString(key) && !hasDataSets(key)">
                 <b>{{key}}</b><br>
