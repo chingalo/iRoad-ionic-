@@ -305,6 +305,24 @@ angular.module('app', [
           }
         }
       })
+      .state('app.offensePaymentForm', {
+        url: '/offense-payment-form',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/offensePaymentForm.html',
+            controller : 'offenseController'
+          }
+        }
+      })
+      .state('app.codeGenerationView', {
+        url: '/code-generation-view',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/codeGenerationView.html',
+            controller : 'offenseController'
+          }
+        }
+      })
 
       .state('app.driverVerification', {
         url: '/driver-verification',

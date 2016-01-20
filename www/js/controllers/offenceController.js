@@ -3,7 +3,7 @@
  */
 angular.module('app')
 
-.controller('offenseController',function($scope,$ionicModal,ionicToast,$localStorage,$state){
+  .controller('offenseController',function($scope,$rootScope,$ionicModal,ionicToast,$ionicHistory,$localStorage,$state){
 
     $scope.data = {};
     $scope.data.newOffense = {};
@@ -14,10 +14,27 @@ angular.module('app')
       $scope.reportedOffenseData = $localStorage.reportedOffenseData;
     }
 
+    //loading necessary data for offense reporting
+    prepareOffenseForms();
+    getCurrentLocation();
+
+    function getCurrentLocation(){
+
+      navigator.geolocation.getCurrentPosition(function(position){
+        $rootScope.$apply(function(){
+
+          $scope.geoPosition = position;
+        });
+      }, function(){
+
+      }, {timeout: 10000, enableHighAccuracy: true});
+    }
+    //function for toaster messages
     function progressMessage(message){
       ionicToast.show(message, 'bottom', false, 2000);
     }
 
+    //function for redirect to home page
     function toHomePage(){
       $ionicHistory.clearCache().then(function() {
 
@@ -27,6 +44,7 @@ angular.module('app')
       });
     }
 
+    //function to handle date values
     function formatDate(dateValue){
 
       var m,d = (new Date(dateValue));
@@ -62,7 +80,6 @@ angular.module('app')
               vehiclePlateNumber  =  vehiclePlateNumber.substr(0,4) + ' ' +vehiclePlateNumber.substr(4);
             }
             $scope.data.loading = true;
-            console.log(driverLicenceNumber);
             var driverModel =  new iroad2.data.Modal('Driver',[]);
             driverModel.get({value:driverLicenceNumber},function(driverList){
               if(driverList.length > 0){
@@ -146,6 +163,7 @@ angular.module('app')
       }
     };
 
+    //function to ensure no multiple offense data submissions
     function prepareSavingOffenseData(){
 
       for(var key in $scope.data.newOffense){
@@ -161,16 +179,17 @@ angular.module('app')
       $state.go('app.confirmReportingOffense');
     }
 
+    //functions to handle offense reporting function
     $scope.payNow = function(){
 
       savingOffensesData('now');
     };
-
     $scope.payLater = function(){
 
       savingOffensesData('later');
     };
 
+    //function to save all offense data
     function savingOffensesData(paymentType){
 
       var otherData = {orgUnit:$localStorage.loginUserData.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:formatDate(new Date())};
@@ -184,6 +203,8 @@ angular.module('app')
 
           var offenseSavingResponse = result.response;
           var offenseId = offenseSavingResponse.importSummaries[0].reference;
+          offenseInputData['id'] = offenseId;
+          $localStorage.reportedOffenseData.offenseData = offenseInputData;
 
           var saveDataArray = [];
           angular.forEach(offenseList,function(registry){
@@ -193,19 +214,20 @@ angular.module('app')
             };
             saveDataArray.push(off);
           });
-          var i = 0;
           var offence = new iroad2.data.Modal("Offence",[]);
           offence.save(saveDataArray,otherData,function(){
-              i ++;
-              if(i == offenseList.length){
 
-                $scope.data.loading = false;
-                $scope.$apply();
-                if(paymentType == 'now'){
-                  alert('pay now');
-                }else{
-                  alert('pay later');
-                }
+              var message = "You have successfully report offense.";
+              progressMessage(message);
+              $scope.data.loading = false;
+              $scope.$apply();
+
+              if(paymentType == 'now'){
+
+                offensePaymentForm();
+              }else{
+
+                codeGenerationView();
               }
             },function(){
 
@@ -221,6 +243,123 @@ angular.module('app')
       },offenceEventModal.getModalName());
     }
 
+    //function handle view based on payment confirmation
+    function codeGenerationView(){
+
+
+      $scope.data.loading = true;
+      var eventDate = (new Date()).toISOString();
+      var otherData = {orgUnit:$localStorage.loginUserData.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:formatDate(eventDate)};
+      if($scope.geoPosition){
+        otherData.coordinate = {
+          "latitude": $scope.geoPosition.coords.latitude,
+          "longitude": $scope.geoPosition.coords.longitude
+        };
+      }else{
+        otherData.coordinate = {"latitude": "","longitude": ""};
+      }
+
+      $scope.paymentData ={};
+      $scope.paymentData['Offence_Event'] = $scope.reportedOffenseData.offenseData;
+      $scope.paymentData['Amount'] = $scope.reportedOffenseData.selectedOffenses.amount;
+
+      var paymentEventModal = new iroad2.data.Modal("Payment Reciept",[]);
+      paymentEventModal.save($scope.paymentData,otherData,function(result){
+
+        result = result.response;
+        $localStorage.reportedOffenseData.paymentCode  = result.importSummaries[0].reference;
+
+        $scope.data.loading = false;
+        $scope.$apply();
+        $state.go('app.codeGenerationView');
+      },function(){
+
+        $scope.data.loading = false;
+        $scope.$apply();
+      },paymentEventModal.getModalName());
+
+    }
+    function offensePaymentForm(){
+
+      $state.go('app.offensePaymentForm');
+    }
+
+    //function to save payment details
+    $scope.savePaymentData = function(){
+
+      var receiptNumber = $scope.data.receiptNumber;
+      var paymentMode = $scope.data.paymentMode;
+
+      if(receiptNumber){
+
+        if(paymentMode){
+
+          var eventDate = (new Date()).toISOString();
+          var otherData = {orgUnit:$localStorage.loginUserData.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:formatDate(eventDate)};
+          if($scope.geoPosition){
+            otherData.coordinate = {
+              "latitude": $scope.geoPosition.coords.latitude,
+              "longitude": $scope.geoPosition.coords.longitude
+            };
+          }else{
+            otherData.coordinate = {"latitude": "","longitude": ""};
+          }
+
+          //update offense data
+          var offenseData = $scope.reportedOffenseData.offenseData;
+          offenseData['Offence Paid'] = true;
+          offenseData['Offence Reciept Amount'] = $scope.reportedOffenseData.selectedOffenses.amount;
+          offenseData['Offence Reciept Number'] = receiptNumber;
+
+          var offenceEventModal = new iroad2.data.Modal("Offence Event",[]);
+          offenceEventModal.save(offenseData,otherData,function(){
+
+            $scope.paymentData ={};
+            $scope.paymentData['Offence_Event'] = $scope.reportedOffenseData.offenseData;
+            $scope.paymentData['Payment Date'] = formatDate(eventDate);
+            $scope.paymentData['Payment Mode'] = paymentMode;
+            $scope.paymentData['Reciept Number'] = receiptNumber;
+            $scope.paymentData['Amount'] = $scope.reportedOffenseData.selectedOffenses.amount;
+
+            var paymentEventModal = new iroad2.data.Modal("Payment Reciept",[]);
+            paymentEventModal.save($scope.paymentData,otherData,function(){
+
+              var message = "Payment has been successfully saved.";
+              progressMessage(message);
+              $scope.data.loading = false;
+              $scope.returnHome();
+              $scope.$apply();
+            },function(){
+
+              $scope.data.loading = false;
+              $scope.$apply();
+            },paymentEventModal.getModalName());
+          },function(){
+
+            $scope.data.loading = false;
+            $scope.$apply();
+          },offenceEventModal.getModalName());
+        }else{
+
+          var message = "Please select payment mode.";
+          progressMessage(message);
+        }
+
+      }else{
+
+        var message = "Please Enter receipt Number.";
+        progressMessage(message);
+      }
+    };
+
+    //function to return home from payment code or success payment
+    $scope.returnHome = function(){
+
+      $localStorage.reportedOffenseData = {};
+      toHomePage();
+    };
+
+    //function to pick up all selected offenses
     function pickSelectedOffenses(offenses){
 
       var selectedOffenses = [];
@@ -243,7 +382,7 @@ angular.module('app')
       };
     }
 
-    //offense modal
+    //function to handle all operation on offense's selection modal
     $ionicModal.fromTemplateUrl('templates/offenseModal.html', {
       scope: $scope
     }).then(function(modal) {
@@ -258,8 +397,7 @@ angular.module('app')
       $scope.modal.hide();
     };
 
-    prepareOffenseForms();
-    //function to prepare form for reporting offense
+    //function to prepare form fields for reporting offense
     function prepareOffenseForms(){
 
       var offenseModal = new iroad2.data.Modal("Offence Event",[new iroad2.data.Relation("Offence Registry","Offence")]);
@@ -318,7 +456,6 @@ angular.module('app')
     $scope.isBoolean = function(key){
       return $scope.is(key,"BOOLEAN");
     };
-
     $scope.is = function(key,dataType){
       for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
         if(iroad2.data.dataElements[j].name == key){
@@ -350,4 +487,4 @@ angular.module('app')
       return false;
     };
 
-});
+  });

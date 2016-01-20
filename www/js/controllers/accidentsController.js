@@ -3,7 +3,7 @@
  */
 angular.module('app')
 
-  .controller('accidentController',function($scope,ionicToast,$localStorage,$cordovaCapture,$state,$ionicHistory){
+  .controller('accidentController',function($scope,$rootScope,ionicToast,$localStorage,$cordovaCapture,$state,$ionicHistory){
 
     $scope.reportingForms = {};
     $scope.data = {};
@@ -29,10 +29,9 @@ angular.module('app')
     function getCurrentLocation(){
 
       navigator.geolocation.getCurrentPosition(function(position){
-        $scope.$apply(function(){
+        $rootScope.$apply(function(){
 
           $scope.geoPosition = position;
-          alert(JSON.stringify(position));
         });
       }, function(){
 
@@ -464,7 +463,16 @@ angular.module('app')
         savedAccidentBasicInfoEvent[key] = mediaFiles.key;
       }
       var accidentEventModal = new iroad2.data.Modal('Accident',[]);
-      var otherData = {orgUnit:$localStorage.loginUserData.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:formatDate(new Date())};
+      var eventDate = (new Date()).toISOString();
+      var otherData = {orgUnit:$localStorage.loginUserData.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:formatDate(eventDate)};
+      if($scope.geoPosition){
+        otherData.coordinate = {
+          "latitude": $scope.geoPosition.coords.latitude,
+          "longitude": $scope.geoPosition.coords.longitude
+        };
+      }else{
+        otherData.coordinate = {"latitude": "","longitude": ""};
+      }
       accidentEventModal.save(savedAccidentBasicInfoEvent,otherData,function(result){
 
         if(result.response){

@@ -1,0 +1,38 @@
+<ion-view view-title="">
+  <ion-content>
+    <div class="item" >
+      <h2>Offense Payment Form</h2>
+    </div>
+    <div class="item item-body">
+      <div class="row">
+        <div class="col col-100">
+
+          <div>
+            <b>Receipt Number</b><br>
+            <label class="item item-input">
+              <input type="text" placeholder="" ng-model="data.receiptNumber">
+            </label>
+          </div>
+
+          <div>
+            <b>Payment Mode</b><br>
+            <div class="item item-input item-select" >
+              <div class="input-label" >
+              </div>
+              <select ng-model="data.paymentMode">
+                <option value="">Choose payment mode</option>
+                <option value="CASH">Cash</option>
+                <option value="MOBILE">Mobile</option>
+                <option value="BANK">Bank</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="button button-full button-positive" ng-click="savePaymentData()">Save</button>
+
+        </div>
+      </div>
+    </div>
+
+  </ion-content>
+</ion-view>

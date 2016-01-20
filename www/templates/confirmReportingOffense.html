@@ -9,7 +9,7 @@
           <div class="row" >
             <div class="col col-100">
               <p ng-repeat="selectedOffense in reportedOffenseData.selectedOffenses.offenseList">
-                {{ selectedOffense.Nature }}br>
+                {{ selectedOffense.Nature }}<br>
                 <b>{{ selectedOffense.Amount | currency : 'Tsh ' : 2}}</b>
               </p>
               <p>
