@@ -33,6 +33,21 @@
           </button>
         </div>
       </div>
+      12 hr
+      <ionic-timepicker input-obj="timePickerObject12Format">
+        <label class="item item-input">
+          <i class="icon ion-clock placeholder-icon item-icon-right"></i>
+          <input type="text" placeholder="time" ng-model="data.time12format">
+        </label>
+      </ionic-timepicker>
+
+      24 hrs
+      <ionic-timepicker input-obj="timePickerObject24Format">
+        <label class="item item-input">
+          <i class="icon ion-clock placeholder-icon item-icon-right"></i>
+          <input type="text" placeholder="time" ng-model="data.time24format">
+        </label>
+      </ionic-timepicker>
 
       <div class="row" ng-if = "data.loading" style="text-align: center;font-size: 14px;">
         <div class="col col-100">

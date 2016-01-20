@@ -7,6 +7,7 @@
 angular.module('app', [
   'ionic',
   'ionic-toast',
+  'ionic-timepicker',
   'ngStorage',
   'ngCordova',
   'ui.date'
@@ -206,6 +207,65 @@ angular.module('app', [
         $ionicHistory.nextViewOptions({ disableBack: true, historyRoot: true });
         $state.go(state);
       });
+    }
+
+    $scope.timePickerObject24Format = {
+      inputEpochTime: ((new Date()).getHours() * 60 * 60),  //Optional
+      step: 5,  //Optional
+      //format: 12,  //Optional
+      titleLabel: 'Select time 24hrs',  //Optional
+      setLabel: 'save',  //Optional
+      closeLabel: 'Close',  //Optional
+      setButtonType: 'button-positive',  //Optional
+      closeButtonType: 'button-stable',  //Optional
+      callback: function (val) {    //Mandatory
+        timePickerCallback24Format(val);
+      }
+    };
+    $scope.timePickerObject12Format = {
+      inputEpochTime: ((new Date()).getHours() * 60 * 60),  //Optional
+      step: 5,  //Optional
+      format: 12,  //Optional
+      titleLabel: 'Select time 12 hrs',  //Optional
+      setLabel: 'save',  //Optional
+      closeLabel: 'Close',  //Optional
+      setButtonType: 'button-positive',  //Optional
+      closeButtonType: 'button-stable',  //Optional
+      callback: function (val) {    //Mandatory
+        timePickerCallback12Format(val);
+      }
+    };
+    $scope.data.time12format = '';
+    $scope.data.time24format = '';
+    function timePickerCallback24Format(val) {
+      if (typeof (val) === 'undefined') {
+        console.log('Time not selected');
+      } else {
+
+        var hours = parseInt(val / 3600);
+        var minutes = (val / 60) % 60;
+        $scope.data.time24format  = prependZero(hours) + ":" + prependZero(minutes);
+      }
+    }
+    function timePickerCallback12Format(val) {
+      if (typeof (val) === 'undefined') {
+        console.log('Time not selected');
+      } else {
+
+        var meridian = ['AM', 'PM'];
+        var hours = parseInt(val / 3600);
+        var minutes = (val / 60) % 60;
+        var hoursRes = hours > 12 ? (hours - 12) : hours;
+
+        var currentMeridian = meridian[parseInt(hours / 12)];
+        $scope.data.time12format  = prependZero(hoursRes) + ":" + prependZero(minutes) + " " + currentMeridian;
+      }
+    }
+    function prependZero(param) {
+      if (String(param).length < 2) {
+        return "0" + String(param);
+      }
+      return param;
     }
   })
   .config(function($stateProvider, $urlRouterProvider) {
