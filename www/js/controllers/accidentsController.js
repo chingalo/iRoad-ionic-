@@ -10,6 +10,11 @@ angular.module('app')
     $scope.data.newAccident = {};
     $scope.data.newAccidentVehicle = {};
     $scope.data.newAccidentWitness = {};
+    $scope.geoPosition = {};
+
+    //loading some data necessary
+    getCurrentLocation();
+    prepareAccidentForms();
 
     //taking values form local storage if existed
     if($localStorage.accidentVehicleForm){
@@ -21,9 +26,25 @@ angular.module('app')
       $scope.accidentWitnesses = $localStorage.accidentWitnessForm;
     }
 
+    function getCurrentLocation(){
+
+      navigator.geolocation.getCurrentPosition(function(position){
+        $scope.$apply(function(){
+
+          $scope.geoPosition = position;
+          alert(JSON.stringify(position));
+        });
+      }, function(){
+
+      }, {timeout: 10000, enableHighAccuracy: true});
+    }
+
+    //function to for toaster messages
     function progressMessage(message){
       ionicToast.show(message, 'bottom', false, 2000);
     }
+
+    //function to redirect to home page
     function toHomePage(){
       $ionicHistory.clearCache().then(function() {
 
@@ -33,6 +54,7 @@ angular.module('app')
       });
     }
 
+    //function to uploading media capture files
     function uploadFile(mediaFile,dataElement) {
 
       var ft = new FileTransfer(),path = mediaFile.localURL;
@@ -83,11 +105,20 @@ angular.module('app')
         progressMessage(message);
       });
     };
+
     //take photo from gallery
     $scope.selectImage = function(){
 
-      var message = 'coming soon';
-      progressMessage(message);
+      navigator.camera.getPicture(function(imageData){
+
+        var message = JSON.stringify(imageData);
+        alert(message);
+
+      },function(){
+
+      }, { quality: 50,
+        destinationType: Camera.DestinationType.FILE_URI,
+        sourceType: Camera.PictureSourceType.PHOTOLIBRARY });
     };
 
     //report form
@@ -179,6 +210,7 @@ angular.module('app')
       }
     };
 
+    //functions for uploading signature files to server
     function uploadPoliceSignature(url,dataElement){
 
       var ft = new FileTransfer();
@@ -275,9 +307,8 @@ angular.module('app')
       $localStorage.accidentVehicleForm = form;
     }
 
-    //move to next vehicle or witness
+    //function to enable movement to next vehicle or witness or accident reporting
     $scope.nextVehicle = function(vehicle){
-
 
       if($scope.data.licenceNumber){
 
@@ -375,7 +406,8 @@ angular.module('app')
         progressMessage(message);
       }
     }
-    //move to next witness
+
+    //function to enable movement to next witness or accident reporting
     $scope.nextWitness = function(witness){
 
       //saving accident witness data to local storage
@@ -400,11 +432,13 @@ angular.module('app')
       }
     };
 
+    //function to prevent multiple saving on accident data
     function prepareSavingAccidentReportingData(){
 
       $state.go('app.confirmReportingAccident');
     }
 
+    //function to cancel accident reporting
     $scope.cancelAccidentReporting = function(){
 
       clearUploadedData();
@@ -413,6 +447,7 @@ angular.module('app')
       toHomePage();
     };
 
+    //function to save accident to the server
     $scope.reportingAccident = function(){
 
       $scope.data.loading = true;
@@ -459,8 +494,6 @@ angular.module('app')
 
               },function(){},accidentWitnessModel.getModalName());
             }
-
-
           }
 
           //saving accident vehicles
@@ -497,6 +530,7 @@ angular.module('app')
 
     };
 
+    //function to clear uploaded media and data files from local storage
     function clearUploadedData(){
 
       $localStorage.signatures = {
@@ -507,6 +541,7 @@ angular.module('app')
       $localStorage.media = {};
     }
 
+    //function to format date values
     function formatDate(dateValue){
 
       var m,d = (new Date(dateValue));
@@ -525,7 +560,7 @@ angular.module('app')
       return date;
     }
 
-    prepareAccidentForms();
+    //function to prepare all form fields suring accident reporting
     function prepareAccidentForms(){
 
       //load basic information for accident
@@ -614,7 +649,6 @@ angular.module('app')
     $scope.isBoolean = function(key){
       return $scope.is(key,"BOOLEAN");
     };
-
     $scope.is = function(key,dataType){
       for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
         if(iroad2.data.dataElements[j].name == key){
