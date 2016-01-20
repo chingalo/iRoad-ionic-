@@ -66,6 +66,7 @@ angular.module('app')
     //prepare data for submission
     $scope.prepareOffenseDataForSubmission = function(){
 
+      console.log('time : ' + $scope.data.time12format);
       pickSelectedOffenses($scope.reportingForms.editInput);
       if($scope.data.reportedOffense.offenseList.length > 0){
 
@@ -486,5 +487,41 @@ angular.module('app')
       }
       return false;
     };
+
+    //time picker operations
+    $scope.data.time12format = '';
+    $scope.timePickerObject12Format = {
+      inputEpochTime: ((new Date()).getHours() * 60 * 60),  //Optional
+      step: 5,  //Optional
+      format: 12,  //Optional
+      titleLabel: 'Select time 12 hrs',  //Optional
+      setLabel: 'save',  //Optional
+      closeLabel: 'Close',  //Optional
+      setButtonType: 'button-positive',  //Optional
+      closeButtonType: 'button-stable',  //Optional
+      callback: function (val) {    //Mandatory
+        timePickerCallback12Format(val);
+      }
+    };
+    function timePickerCallback12Format(val) {
+      if (typeof (val) === 'undefined') {
+        console.log('Time not selected');
+      } else {
+
+        var meridian = ['AM', 'PM'];
+        var hours = parseInt(val / 3600);
+        var minutes = (val / 60) % 60;
+        var hoursRes = hours > 12 ? (hours - 12) : hours;
+
+        var currentMeridian = meridian[parseInt(hours / 12)];
+        $scope.data.time12format  = prependZero(hoursRes) + ":" + prependZero(minutes) + " " + currentMeridian;
+      }
+    }
+    function prependZero(param) {
+      if (String(param).length < 2) {
+        return "0" + String(param);
+      }
+      return param;
+    }
 
   });
