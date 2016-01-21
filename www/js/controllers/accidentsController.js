@@ -70,7 +70,24 @@ angular.module('app')
           progressMessage(message);
         }, options);
     }
+    //function to upload image form gallery
+    function uploadImageFromGallery(imageData,dataElement){
 
+      var ft = new FileTransfer(),path = imageData;
+      var options = {};
+      ft.upload(path, encodeURI($localStorage.baseUrl + "/api/fileResources"), function(result) {
+
+          var data = JSON.parse(result.response);
+          var mediaData = $localStorage.media;
+          mediaData.dataElement = data.response.fileResource.id;
+          $localStorage.media = mediaData;
+        },
+        function() {
+
+          var message = 'Fail to upload ' + dataElement;
+          progressMessage(message);
+        }, options);
+    }
     //take video form camera
     $scope.takeVideo = function(){
 
@@ -109,35 +126,15 @@ angular.module('app')
 
       navigator.camera.getPicture(function(imageData){
 
+        uploadImageFromGallery(imageData,'Accident Image');
         var message = 'Photo has been selected  Successfully';
         progressMessage(message);
-        uploadImageFromGallery(imageData,'Accident Image');
-
       },function(){
 
       }, { quality: 50,
         destinationType: Camera.DestinationType.FILE_URI,
         sourceType: Camera.PictureSourceType.PHOTOLIBRARY });
     };
-
-    //function to upload image form gallery
-    function uploadImageFromGallery(imageData,dataElement){
-
-      var ft = new FileTransfer(),path = imageData;
-      var options = {};
-      ft.upload(path, encodeURI($localStorage.baseUrl + "/api/fileResources"), function(result) {
-
-          var data = JSON.parse(result.response);
-          var mediaData = $localStorage.media;
-          mediaData.dataElement = data.response.fileResource.id;
-          $localStorage.media = mediaData;
-        },
-        function() {
-
-          var message = 'Fail to upload ' + dataElement;
-          progressMessage(message);
-        }, options);
-    }
 
     //report form
     $scope.reportAccidentForm = function(){

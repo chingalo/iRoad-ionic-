@@ -34,6 +34,11 @@ angular.module('app', [
     $scope.data = {};
     var url = 'http://roadsafety.go.tz/demo';
 
+    //function for toaster messages
+    function progressMessage(message){
+      ionicToast.show(message, 'bottom', false, 2000);
+    }
+
     //checking for bas url for app
     if(! $localStorage.baseUrl){
       $localStorage.baseUrl = url;
@@ -42,6 +47,8 @@ angular.module('app', [
       if($localStorage.loginUser){
         var username = $localStorage.loginUser.username;
         var password = $localStorage.loginUser.password;
+        var message = 'Please waiting..';
+        progressMessage(message);
         authenticateUser(username,password);
       }
     }
@@ -80,13 +87,14 @@ angular.module('app', [
         authenticateUser($scope.data.username,$scope.data.password);
 
       }else{
-        ionicToast.show('Please Enter both username and password.', 'bottom', false, 1500);
+        var message = 'Please Enter both username and password.';
+        progressMessage(message);
       }
     };
 
     $scope.logOut = function(){
 
-      $localStorage.loginUser = '';
+      $localStorage.loginUser = {};
       $state.go('login');
     };
 
@@ -150,8 +158,8 @@ angular.module('app', [
                 $state.go('app.home');
 
               }catch(e){
-                var message = 'Fail to login, please your username or password';
-                ionicToast.show(message, 'bottom', false, 1500);
+                var message = 'Fail to login, please check your username or password';
+                progressMessage(message);
                 $scope.data.password = null;
               }
 
@@ -162,45 +170,45 @@ angular.module('app', [
 
               $scope.data.password = null;
               var message = 'Fail to login, please Check your network';
-              ionicToast.show(message, 'bottom', false, 1500);
+              progressMessage(message);
               $scope.data.loading = false;
               $scope.$apply();
             }
           });
 
         },
-        failure : function(err) {
+        failure : function() {
 
           $scope.data.password = null;
           //fail to connect to the server
           var message = 'Fail to connect to the server, please check base url';
-          ionicToast.show(message, 'bottom', true, 1500000);
+          progressMessage(message);
           $scope.data.loading = false;
           $scope.$apply();
         }
       });
-
-    };
+    }
 
 
     //home button redirection
     $scope.reportAccident =  function(){
 
-      goToSideMenuPape('app.reportAccident');
+      goToSideMenuPage('app.reportAccident');
     };
     $scope.reportOffense =  function(){
 
-      goToSideMenuPape('app.reportOffense');
+      goToSideMenuPage('app.reportOffense');
     };
     $scope.driverVerification = function(){
 
-      goToSideMenuPape('app.driverVerification');
+      goToSideMenuPage('app.driverVerification');
     };
     $scope.vehicleVerification = function(){
 
-      goToSideMenuPape('app.vehicleVerification');
+      goToSideMenuPage('app.vehicleVerification');
     };
-    function goToSideMenuPape(state){
+    function goToSideMenuPage(state){
+
       $ionicHistory.clearCache().then(function() {
 
         $ionicHistory.clearHistory();
