@@ -16,14 +16,13 @@ angular.module('app')
 
     //loading necessary data for offense reporting
     prepareOffenseForms();
-    getCurrentLocation();
 
     function getCurrentLocation(){
 
       navigator.geolocation.getCurrentPosition(function(position){
         $rootScope.$apply(function(){
 
-          $scope.geoPosition = position;
+          $localStorage.geoPosition = position;
         });
       }, function(){
 
@@ -67,6 +66,7 @@ angular.module('app')
     $scope.prepareOffenseDataForSubmission = function(){
 
       console.log('time : ' + $scope.data.time12format);
+      getCurrentLocation();
       pickSelectedOffenses($scope.reportingForms.editInput);
       if($scope.data.reportedOffense.offenseList.length > 0){
 
@@ -251,10 +251,10 @@ angular.module('app')
       $scope.data.loading = true;
       var eventDate = (new Date()).toISOString();
       var otherData = {orgUnit:$localStorage.loginUserData.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:formatDate(eventDate)};
-      if($scope.geoPosition){
+      if($localStorage.geoPosition){
         otherData.coordinate = {
-          "latitude": $scope.geoPosition.coords.latitude,
-          "longitude": $scope.geoPosition.coords.longitude
+          "latitude": $localStorage.geoPosition.coords.latitude,
+          "longitude": $localStorage.geoPosition.coords.longitude
         };
       }else{
         otherData.coordinate = {"latitude": "","longitude": ""};
@@ -297,10 +297,10 @@ angular.module('app')
 
           var eventDate = (new Date()).toISOString();
           var otherData = {orgUnit:$localStorage.loginUserData.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:formatDate(eventDate)};
-          if($scope.geoPosition){
+          if($localStorage.geoPosition){
             otherData.coordinate = {
-              "latitude": $scope.geoPosition.coords.latitude,
-              "longitude": $scope.geoPosition.coords.longitude
+              "latitude": $localStorage.geoPosition.coords.latitude,
+              "longitude": $localStorage.geoPosition.coords.longitude
             };
           }else{
             otherData.coordinate = {"latitude": "","longitude": ""};

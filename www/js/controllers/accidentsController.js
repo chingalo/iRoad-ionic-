@@ -10,10 +10,9 @@ angular.module('app')
     $scope.data.newAccident = {};
     $scope.data.newAccidentVehicle = {};
     $scope.data.newAccidentWitness = {};
-    $scope.geoPosition = {};
+    $localStorage.geoPosition = {};
 
     //loading some data necessary
-    getCurrentLocation();
     prepareAccidentForms();
 
     //taking values form local storage if existed
@@ -31,7 +30,7 @@ angular.module('app')
       navigator.geolocation.getCurrentPosition(function(position){
         $rootScope.$apply(function(){
 
-          $scope.geoPosition = position;
+          $localStorage.geoPosition = position;
         });
       }, function(){
 
@@ -79,7 +78,7 @@ angular.module('app')
       $cordovaCapture.captureVideo(options).then(function(videoData) {
 
         uploadFile(videoData[0],'Accident Video');
-        var message = 'Video has been taken Successfully';
+        var message = 'Video has been  Successfully';
         progressMessage(message);
       }, function() {
 
@@ -96,7 +95,7 @@ angular.module('app')
       $cordovaCapture.captureImage(options).then(function(imageData) {
 
         uploadFile(imageData[0],'Accident Image');
-        var message = 'Photo Taken Successfully';
+        var message = 'Photo has been taken  Successfully';
         progressMessage(message);
       }, function() {
 
@@ -110,8 +109,10 @@ angular.module('app')
 
       navigator.camera.getPicture(function(imageData){
 
-        var message = JSON.stringify(imageData);
-        alert(message);
+        //var message = JSON.stringify(imageData);
+        //alert(message);
+        var message = 'Photo has been selected  Successfully';
+        progressMessage(message);
 
       },function(){
 
@@ -123,6 +124,7 @@ angular.module('app')
     //report form
     $scope.reportAccidentForm = function(){
 
+      getCurrentLocation();
       $state.go('app.reportAccidentForm');
     };
 
@@ -465,10 +467,10 @@ angular.module('app')
       var accidentEventModal = new iroad2.data.Modal('Accident',[]);
       var eventDate = (new Date()).toISOString();
       var otherData = {orgUnit:$localStorage.loginUserData.organisationUnits[0].id,status: "COMPLETED",storedBy: "admin",eventDate:formatDate(eventDate)};
-      if($scope.geoPosition){
+      if($localStorage.geoPosition){
         otherData.coordinate = {
-          "latitude": $scope.geoPosition.coords.latitude,
-          "longitude": $scope.geoPosition.coords.longitude
+          "latitude": $localStorage.geoPosition.coords.latitude,
+          "longitude": $localStorage.geoPosition.coords.longitude
         };
       }else{
         otherData.coordinate = {"latitude": "","longitude": ""};
