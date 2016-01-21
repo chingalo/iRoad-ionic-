@@ -26,7 +26,7 @@
             </label>
           </div>
           <!-- Other form fields -->
-          <div ng-repeat="(key,value) in reportingForms.dataElements" ng-if="key == 'Offence Admission Status' || key == 'Offence Facts' || key == 'Offence Date'" >
+          <div ng-repeat="(key,value) in reportingForms.dataElements" ng-if="key == 'Offence Place' || key == 'Offence Admission Status' || key == 'Offence Facts' || key == 'Offence Date'" >
             <div class="col col-100">
               <div ng-if="isInteger(key)">
                 <b>{{key}}</b><br>
