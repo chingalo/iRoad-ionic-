@@ -109,8 +109,8 @@ angular.module('app')
 
       navigator.camera.getPicture(function(imageData){
 
-        //var message = JSON.stringify(imageData);
-        //alert(message);
+        var image = "data:image/jpeg;base64," + imageData;
+        alert(JSON.stringify(image));
         var message = 'Photo has been selected  Successfully';
         progressMessage(message);
 
