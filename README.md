@@ -19,4 +19,4 @@ A revamped version of iROAD 2 app, developed using web technologies, An Ionic Fr
 <li>Date Picker</li>
 <li>Success or Error Notification pop-up</li>
 </ol>
-<a href = "https://build.phonegap.com/apps/1732409/share">Download now</a>
+<a href = "https://build.phonegap.com/apps/1860409/share">Download now</a>

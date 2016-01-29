@@ -1,9 +1,9 @@
 /**
- * 
+ *
  * 	@author Vincent P. Minde
- * 
+ *
  *	This is Library to ease the use of iroad2
- * 	 
+ *
  */
 
 /**
@@ -12,11 +12,11 @@
 if (typeof String.prototype.startsWith != 'function') {
 	/**
 	 * Checks if a string starts with a given string
-	 * 
+	 *
 	 * @param string
-	 * 
+	 *
 	 * @return boolean
-	 * 
+	 *
 	 */
 	  String.prototype.startsWith = function (str){
 	    return this.indexOf(str) === 0;
@@ -25,27 +25,27 @@ if (typeof String.prototype.startsWith != 'function') {
 if (typeof String.prototype.endsWith != 'function') {
 	/**
 	 * Checks if a string ends with a given string
-	 * 
+	 *
 	 * @param string
-	 * 
+	 *
 	 * @return boolean
-	 * 
+	 *
 	 */
 	  String.prototype.endsWith = function (str){
 	    return this.slice(-str.length) == str;
 	};
 }
 /**
- * 
+ *
  * This is the iroad2 main object
- * 
+ *
  */
 iroad2 = {
 		//Holds specific dhis data and objects related to data
 		data : {
-			
+
 		}
-		
+
 }
 /**
  *	Function to be envoked when initializing iroad2 data
@@ -73,14 +73,14 @@ iroad2.Init = function(config){
 	});
 }
 /**
- * 
+ *
  *	This is the relationship with a program in the database for a many to many relationship
  *	@constructor
  *
  *	@param modalName {string} Name of the Program in iroad2 to form a relationship
  *
  *	@param [pivotModalName] {string} Name of the Program in iroad2 as the pivot table
- *	
+ *
  *	@example <caption>Example usage of initializing a relationship of one to many.</caption>
  *	var driverRelation = new iroad2.data.Relation("Driver");
  *
@@ -106,7 +106,7 @@ iroad2.data.Relation = function () {
 }
 
 /**
- * 
+ *
  *	This is the Search criteria used to search for events in a program
  *
  *	@constructor
@@ -116,7 +116,7 @@ iroad2.data.Relation = function () {
  *	@param operator {string} Operator to be used to search
  *
  *	@param value {string} Value that is being searched
- *	
+ *
  *	@example <caption>Example usage of initializing a search criteria.</caption>
  *	var driverLicenceSearch = new iroad2.data.SearchCriteria("Driver License Number","=","4002566389");
  *
@@ -135,7 +135,7 @@ iroad2.data.DataResult = function (pager,data) {
 
 
 /**
- * 
+ *
  *	This is the modal that reflects a program in the database
  *	@param modalName {string} Name of the Program in iroad2 to be mirrored
  *
@@ -149,7 +149,7 @@ iroad2.data.DataResult = function (pager,data) {
  *	var driver = new iroad2.data.Modal("Driver",[{name:"Offence Event",type:"MANY_MANY",pivot:"Offence"}]);
  */
 iroad2.data.Modal = function (modalName,relations) {
-	
+
 	//Set self to get refference of this object
 	self = this;
 	//Set the modal name
@@ -158,7 +158,7 @@ iroad2.data.Modal = function (modalName,relations) {
 	this.relations = relations;
 	/**
 	 * Get the Modal name
-	 * 
+	 *
 	 * @return string modal name
 	 */
 	this.getModalName = function(){
@@ -166,7 +166,7 @@ iroad2.data.Modal = function (modalName,relations) {
 	}
 	/**
 	 * Get the Modal Relationships
-	 * 
+	 *
 	 * @return {iroad2.data.Relation[]} modal name
 	 */
 	this.getRelationships = function(){
@@ -174,9 +174,9 @@ iroad2.data.Modal = function (modalName,relations) {
 	}
 	/**
 	 * Get a program from the list of iroad2 programs by its name
-	 * 
+	 *
 	 * @param string name
-	 * 
+	 *
 	 * @return Program
 	 */
 	this.getProgramByName = function(name){
@@ -189,9 +189,9 @@ iroad2.data.Modal = function (modalName,relations) {
 	}
 	/**
 	 * Get a data element from the list of iroad2 dataElements by its id
-	 * 
+	 *
 	 * @param id {string} This is the dataElement id
-	 * 
+	 *
 	 * @return {object} The data element as a jsonObject
 	 */
 	this.getDataElement = function(id) {
@@ -203,9 +203,9 @@ iroad2.data.Modal = function (modalName,relations) {
 	}
 	/**
 	 * Get a data element from the list of iroad2 dataElements by its name
-	 * 
+	 *
 	 * @param dataElementName {string} This is the name of the data element
-	 * 
+	 *
 	 * @return {object} The data element as a jsonObject
 	 */
 	this.getDataElementByName = function(name) {
@@ -217,19 +217,19 @@ iroad2.data.Modal = function (modalName,relations) {
 	}
 	/**
 	 * Gets all rows of a program
-	 * 
+	 *
 	 * @param onResult {function}  Callback function after the result is returned
-	 * 
+	 *
 	 */
 	this.getAll = function(){//}(onResult,pageSize,page){
 		var onResult = arguments[0];
 		//Get program by name
 		var program = self.getProgramByName(self.modalName);
-		
+
 		var url = "api/events.json?totalPages=true&program="+program.id;
-		
+
 		if(arguments.length > 1){
-			
+
 			url = "api/events.json?totalPages=true&programStage="+program.programStages[0].id+"&pageSize="+arguments[1]+"&page=" + arguments[2];
 		}
 		// Stores the rows of an entity
@@ -258,17 +258,17 @@ iroad2.data.Modal = function (modalName,relations) {
 			for(var j = 0; j < result.events.length; j++) {//For each event render to entity column json
 				var event = result.events[j];
 				selfGetAll.resCount.push(1);
-				
+
 				//Render events to appropriate Modal
 				self.renderToJSON(event, function(object) {
 					//Push object to events
-					
+
 					//document.getElementById("result").innerHTML += JSON.stringify(selfGet.events) +"<br /><br />";
 					selfGetAll.events.push(object);
-					
+
 					//Pop count to signify
 					selfGetAll.resCount.pop();
-					
+
 					//Check if all results from the server are fetched
 					selfGetAll.resultsFetched();
 				});
@@ -277,61 +277,17 @@ iroad2.data.Modal = function (modalName,relations) {
 			selfGetAll.resultsFetched();
 		});
 		return;
-	}
-	/**
-	 * Gets all rows of a program
-	 * 
-	 * @param onResult {function}  Callback function after the result is returned
-	 * 
-	 */
-	/*this.getAll = function(pageSize,page,onResult){
-		//Get program by name
-		var program = self.getProgramByName(self.modalName);
-		// Stores the rows of an entity
-		this.events = [];
-		var selfGetAll = this;
-		//Checks that all requests are made
-		this.resCount = [];
-		this.resultsFetched = function(){
-			if (selfGetAll.resCount.length == 0) {
-				onResult(selfGetAll.events);
-			}
-		}
-		//Get events of the program from the server
-		http.get(iroad2.config.baseUrl + "api/events?programStage="+program.programStages[0].id+"&pageSize="+pageSize+"&page=1" + page,function(result){
-			for(var j = 0; j < result.events.length; j++) {//For each event render to entity column json
-				var event = result.events[j];
-				selfGetAll.resCount.push(1);
-				
-				//Render events to appropriate Modal
-				self.renderToJSON(event, function(object) {
-					//Push object to events
-					
-					//document.getElementById("result").innerHTML += JSON.stringify(selfGet.events) +"<br /><br />";
-					selfGetAll.events.push(object);
-					
-					//Pop count to signify
-					selfGetAll.resCount.pop();
-					
-					//Check if all results from the server are fetched
-					selfGetAll.resultsFetched();
-				});
-			}
-			//Check if all results from the server are fetched
-			selfGetAll.resultsFetched();
-		});
-		return;
-	}*/
+	};
 	/**
 	 * Search events of a program
-	 * 
+	 *
 	 * @param criteria {iroad2.data.SearchCriteria} Array of search criterias where each element in the array is an object in the form {name,operator,value}
-	 * 
+	 *
 	 * @param onResult {function} Callback after the result is returned
-	 * 
+	 *
 	 */
 	this.get = function(criteria,onResult){
-		
+
 		//Get program by name
 		var program = self.getProgramByName(self.modalName);
 		// Stores the rows of an entity
@@ -344,7 +300,7 @@ iroad2.data.Modal = function (modalName,relations) {
 				onResult(selfGet.events);
 			}
 		}
-		
+
 		//Get events of the program from the server
 		http.get(iroad2.config.baseUrl + "api/events.json?program="+program.id,function(result2){
 
@@ -366,7 +322,7 @@ iroad2.data.Modal = function (modalName,relations) {
 						});
 						break;
 					}
-					
+
 				}
 			}
 			//Check if all results from the server are fetched
@@ -376,11 +332,11 @@ iroad2.data.Modal = function (modalName,relations) {
 	}
 	/**
 	 * Find events of a program by id
-	 * 
+	 *
 	 * @param id {string} Identifier of an event
-	 * 
+	 *
 	 * @param onResult {function} Callback function after the result is returned.
-	 * 
+	 *
 	 */
 	this.find = function(uid, onResult) {
 		//Get program by name
@@ -411,28 +367,28 @@ iroad2.data.Modal = function (modalName,relations) {
 			}else{
 				onSuccess(selfrenderToJSON.object);
 			}
-			
+
 		}
 		/**
 		 * Helper to fetch refference program
-		 * 
+		 *
 		 * @constructor
-		 * 
+		 *
 		 * @param programModal {iroad2.data.Modal} Program to fetch from
-		 * 
+		 *
 		 * @param id {string} Identifier of the event to be fetched from the program
 		 */
 		var RefferenceProgram = function(programModal, id) {
 			this.program = programModal;
 			this.value = id;
 			this.fetch = function() {
-				
+
 				var selfProgram = this;
 					//Find the event from the modal being refferenced
 					this.program.find(this.value, function(result) {
 						//Set the field in the json
 						selfrenderToJSON.object[selfProgram.program.getModalName()] = result;
-						
+
 						//Check if all results from the server are fetched
 						selfrenderToJSON.checkAllResultsFetched();
 					});
@@ -440,14 +396,14 @@ iroad2.data.Modal = function (modalName,relations) {
 		}
 		this.object["id"] = event.event;
 		for(var k = 0; k < event.dataValues.length; k++) {
-			
+
 			var dataValue = event.dataValues[k];
 			var dataElement = self.getDataElement(dataValue.dataElement);
 			if (!dataElement.name.startsWith(iroad2.config.refferencePrefix)) {//If dataElement is not a foregin key
 				//Set the value in the object
 				selfrenderToJSON.object[dataElement.name] = dataValue.value;
 			} else {//If dataElement is a foregin key fetch the refferencing program
-				
+
 				//Remove the refferencePrefix prefix to get the program for reffencing
 				var program = dataElement.name.substring(iroad2.config.refferencePrefix.length);
 				//Initialize the Modal from the program name
@@ -458,11 +414,11 @@ iroad2.data.Modal = function (modalName,relations) {
 		}
 		//Add relations to the object as specified by the relations
 		//
-		
+
 		for(var k = 0; k < relations.length; k++) {//For each relation
 			var relation = relations[k];
 			var programModal = null;
-			
+
 			if(relation.type == "ONE_MANY"){//If relationship is one to many
 				programModal = new iroad2.data.Modal(relation.name, []);
 			}else if(relation.type == "MANY_MANY"){//If relationship is many to many
@@ -478,9 +434,9 @@ iroad2.data.Modal = function (modalName,relations) {
 			//Override the fetch function to implement a get instead of a find
 			refProgram.fetch = function() {
 				var selfProgram = this;
-				this.program.get({program:self.getModalName(),value:selfrenderToJSON.object.id}, function(result) {	
+				this.program.get({program:self.getModalName(),value:selfrenderToJSON.object.id}, function(result) {
 					selfrenderToJSON.object[selfProgram.program.getModalName()] = result;
-					
+
 					//Check if all results from the server are fetched
 					selfrenderToJSON.checkAllResultsFetched();
 				});
@@ -492,9 +448,9 @@ iroad2.data.Modal = function (modalName,relations) {
 	}
 	/**
 	 * Converts a json object to an event representation in dhis
-	 * 
+	 *
 	 * @param object {object} Json object to convert
-	 * 
+	 *
 	 * @param otherData {object} Additional data to be added to the event like program,eventDate,orgUnit etc
 	 */
 	this.convertToEvent = function(modalName,object,otherData){
@@ -546,11 +502,11 @@ iroad2.data.Modal = function (modalName,relations) {
 	}
 	/**
 	 * Save an event from a json object
-	 * 
+	 *
 	 * @param data {object | array} Json object to be saved
-	 * 
+	 *
 	 * @param onSuccess {function} Callback function after the result is returned successfully.
-	 * 
+	 *
 	 * @param (Optional) onError {function} Callback function an error has occured.
 	 */
 	this.save = function(data,otherData,onSuccess,onError,modalName){
@@ -562,7 +518,7 @@ iroad2.data.Modal = function (modalName,relations) {
 		var saveUrl = iroad2.config.baseUrl + "api/events";
 		if(Array.isArray(data)){
 			var events = [];
-			
+
 			for(var count = 0; count < data.length;count++){
 				events.push(self.convertToEvent(savingModal,data[count],otherData));
 			}
@@ -591,24 +547,24 @@ iroad2.data.Modal = function (modalName,relations) {
 	}
 };
 /**
- * 
+ *
  *	Makes http requests
  *
  *	@constructor
- *	
+ *
  */
 http = {
 	/**
 	 * Makes a http request
-	 * 
+	 *
 	 * @param url {string} Url for the request
-	 * 
+	 *
 	 * @param method {string} Method to be used.
-	 * 
+	 *
 	 * @param data {object} Data to be sent to the server.
-	 * 
+	 *
 	 * @param onSuccess {function} Callback function after the result is returned successfully.
-	 * 
+	 *
 	 * @param (Optional) onError {function} Callback function an error has occured.
 	 */
 	request : function(url, method, data, onSuccess, onError) {
@@ -638,7 +594,7 @@ http = {
 				}else if(xmlhttp.status == 404){
 					onError({});
 				}
-				
+
 
 			}
 		}
@@ -649,15 +605,15 @@ http = {
 		}catch(e){
 			onError(e);
 		}
-		
+
 	},
 	/**
 	 * Makes a http get request
-	 * 
+	 *
 	 * @param url {string} Url for the request
-	 * 
+	 *
 	 * @param onSuccess {function} Callback function after the result is returned successfully.
-	 * 
+	 *
 	 * @param (Optional) onError {function} Callback function an error has occured.
 	 */
 	get : function(url, onSuccess,onError) {
@@ -665,11 +621,11 @@ http = {
 	},
 	/**
 	 * Makes a http post request
-	 * 
+	 *
 	 * @param url {string} Url for the request
-	 * 
+	 *
 	 * @param onSuccess {function} Callback function after the result is returned successfully.
-	 * 
+	 *
 	 * @param (Optional)onError {function} Callback function an error has occured.
 	 */
 	post : function(url, data,onSuccess,onError) {
@@ -677,11 +633,11 @@ http = {
 	},
 	/**
 	 * Makes a http put request
-	 * 
+	 *
 	 * @param url {string} Url for the request
-	 * 
+	 *
 	 * @param onSuccess {function} Callback function after the result is returned successfully.
-	 * 
+	 *
 	 * @param (Optional)onError {function} Callback function an error has occured.
 	 */
 	put : function(url, data,onSuccess,onError) {
