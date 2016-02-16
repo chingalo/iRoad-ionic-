@@ -94,7 +94,7 @@ angular.module('app', [
 
     $scope.logOut = function(){
 
-      $localStorage.loginUser = {};
+      delete $localStorage.loginUser;;
       $state.go('login');
     };
 
