@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget id="com.ionicframework.iroad726992" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-  <name>iRoad - ionic</name>
+<widget id="com.ionicframework.iroadV20" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+  <name>iRoad - v20</name>
   <description>
         An Ionic Framework and Cordova project for Mobile app for accessing iROAD system.
     </description>
@@ -74,11 +74,6 @@
   </platform>
   <platform name="winphone" />
 
-
   <icon src="ic_launcher.png" width="170" height="170" />
-
-
-
-
 
 </widget>
