@@ -663,21 +663,25 @@ angular.module('app')
 
     //functions for flexible forms on offense
     $scope.isInteger = function(key){
-      return $scope.is(key,"NUMBER");
+      return $scope.is(key,"int");
+    };
+    $scope.isFile = function(key){
+      return $scope.is(key,"file");
     };
     $scope.isDate = function(key){
-      return $scope.is(key,"DATE");
+      console.log(key);
+      return $scope.is(key,"date");
     };
     $scope.isString = function(key){
-      return $scope.is(key,"TEXT");
+      return $scope.is(key,"string");
     };
     $scope.isBoolean = function(key){
-      return $scope.is(key,"BOOLEAN");
+      return $scope.is(key,"bool");
     };
     $scope.is = function(key,dataType){
       for(var j = 0 ;j < iroad2.data.dataElements.length;j++){
         if(iroad2.data.dataElements[j].name == key){
-          if(iroad2.data.dataElements[j].valueType == dataType){
+          if(iroad2.data.dataElements[j].type == dataType){
             return true;
           }
           break;
